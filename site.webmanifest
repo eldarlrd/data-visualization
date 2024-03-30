@@ -1,0 +1,23 @@
+{
+  "name": "Data Visualization Compendium",
+  "short_name": "Data Visualization",
+  "dir": "ltr",
+  "lang": "en",
+  "categories": [
+    "education"
+  ],
+  "display": "minimal-ui",
+  "orientation": "natural",
+  "theme_color": "#fff",
+  "background_color": "#fff",
+  "description": "A Data Visualization Compendium",
+  "start_url": "https://eldarlrd.github.io/data-visualization/",
+  "icons": [
+    {
+      "src": "favicon.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ]
+}
