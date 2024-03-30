@@ -1,4 +1,5 @@
 # Data Visualization Compendium
+[![Version](https://img.shields.io/badge/version-0.0.1-0284c7?&logo=git-extensions&labelColor=475569)](#)
 [![License](https://img.shields.io/badge/license-AGPL--3.0--only-c026d3?&logo=open-source-initiative&logoColor=fff&labelColor=475569)](https://github.com/eldarlrd/data-visualization/blob/main/LICENSE)
 
 > Data Visualization Compendium uses
