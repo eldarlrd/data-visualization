@@ -6,7 +6,6 @@
 > - **[D3](https://d3js.org)**
 > - **[Bootstrap](https://getbootstrap.com)**
 > - **[TypeScript](https://typescriptlang.org)**
-> - **[Sass](https://sass-lang.com)**
 > - **[Vite](https://vitejs.dev)**
 >
 > for displaying the charts, maps, and graphs.

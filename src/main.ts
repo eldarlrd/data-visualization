@@ -18,13 +18,15 @@
  * along with Data Visualization. If not, see <https://www.gnu.org/licenses/>.
  */
 
-import '@/main.scss';
+import 'bootstrap/scss/bootstrap.scss';
+
+import { Header } from '@/banners/header.ts';
 
 const root = document.getElementById('root');
 
 if (root)
   root.innerHTML = `
-    <h1>Hello, World!</h1>
+    ${Header()}
   `;
 
 // Easter Egg
