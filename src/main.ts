@@ -20,13 +20,17 @@
 
 import 'bootstrap/scss/bootstrap.scss';
 
-import { Header } from '@/banners/header.ts';
+import { App } from '@/App.ts';
+import { Footer } from '@/features/banners/Footer.ts';
+import { Header } from '@/features/banners/Header.ts';
 
 const root = document.getElementById('root');
 
 if (root)
   root.innerHTML = `
     ${Header()}
+    ${App()}
+    ${Footer()}
   `;
 
 // Easter Egg
