@@ -8,8 +8,8 @@
   ],
   "display": "minimal-ui",
   "orientation": "natural",
-  "theme_color": "#fff",
-  "background_color": "#fff",
+  "theme_color": "#0d6efd",
+  "background_color": "#f8f9fa",
   "description": "A Data Visualization Compendium",
   "start_url": "https://eldarlrd.github.io/data-visualization/",
   "icons": [

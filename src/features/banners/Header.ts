@@ -1,7 +1,7 @@
 export const Header = (): string => `
-  <header class='py-2'>
-    <h1 class='text-center user-select-none'>
+  <header class='my-2'>
+    <h2 class='text-center user-select-none'>
       Data Visualization Compendium
-    </h1>
+    </h2>
   </header>
 `;

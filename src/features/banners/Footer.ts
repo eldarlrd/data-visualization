@@ -1,5 +1,5 @@
 export const Footer = (): string => `
-  <footer class='py-2'>
+  <footer class='my-2'>
     <h4 class='text-center user-select-none'>
       © 2024
       <a
