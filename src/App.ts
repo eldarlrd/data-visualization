@@ -1,78 +1,35 @@
-export const App = (): string => `
-  <main class='my-2 container-fluid row justify-content-center align-items-center column-gap-3'>
-    <figure class='col-sm-5 col-lg-3 bg-danger user-select-none'>
-      <h4>
-        US GDP Bar Chart
-      </h4>
-      <figcaption>
-        Visualized Gross Domestic Product by the
-        Federal Reserve Economic Data from 1947 to 2015.
-      </figcaption>
-      <a
-        class='link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover fs-5'
-        href='#'>
-        Show
-      </a>
-    </figure>
+import VISUALIZATIONS from '@/content/visualizations.yaml';
 
-    <figure class='col-sm-5 col-lg-3 bg-danger user-select-none'>
-      <h4>
-        US GDP Bar Chart
-      </h4>
-      <figcaption>
-        Visualized Gross Domestic Product by the
-        Federal Reserve Economic Data from 1947 to 2015.
-      </figcaption>
-      <a
-        class='link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover fs-5'
-        href='#'>
-        Show
-      </a>
-    </figure>
+interface VisualizationDetails {
+  title: string;
+  text: string;
+}
 
-    <figure class='col-sm-5 col-lg-3 bg-danger user-select-none'>
-      <h4>
-        US GDP Bar Chart
+export const App = (): string => {
+  const VisualizationCards = (VISUALIZATIONS as VisualizationDetails[]).map(
+    visualization => `
+  <figure style='min-height:11rem;max-height:13rem' class='justify-content-between card card-body col-sm-5 col-lg-3'>
+    <span>
+      <h4 class='card-title'>
+        ${visualization.title}
       </h4>
-      <figcaption>
-        Visualized Gross Domestic Product by the
-        Federal Reserve Economic Data from 1947 to 2015.
+      <figcaption class='card-text'>
+        ${visualization.text}
       </figcaption>
-      <a
-        class='link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover fs-5'
-        href='#'>
-        Show
-      </a>
-    </figure>
+    </span>
+    <a
+      style='max-width:fit-content'
+      class='mt-1 link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover user-select-none fs-5'
+      href=${visualization.title.toLowerCase().replaceAll(' ', '-')}>
+      Show
+    </a>
+  </figure>
+`
+  );
 
-    <figure class='col-sm-5 col-lg-3 bg-danger user-select-none'>
-      <h4>
-        US GDP Bar Chart
-      </h4>
-      <figcaption>
-        Visualized Gross Domestic Product by the
-        Federal Reserve Economic Data from 1947 to 2015.
-      </figcaption>
-      <a
-        class='link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover fs-5'
-        href='#'>
-        Show
-      </a>
-    </figure>
-
-    <figure class='col-sm-5 col-lg-3 bg-danger user-select-none'>
-      <h4>
-        US GDP Bar Chart
-      </h4>
-      <figcaption>
-        Visualized Gross Domestic Product by the
-        Federal Reserve Economic Data from 1947 to 2015.
-      </figcaption>
-      <a
-        class='link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover fs-5'
-        href='#'>
-        Show
-      </a>
-    </figure>
-  </main>
-`;
+  return `
+    <main class='my-4 container row justify-content-center align-items-center column-gap-3'>
+      ${VisualizationCards.join('')}
+    </main>
+  `;
+};
