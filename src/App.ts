@@ -1,35 +1,33 @@
 import VISUALS from '@/content/visuals.yaml';
+import { Grid, type VisualProps } from '@/features/Grid.ts';
+import { BarChart } from '@/features/pages/BarChart.ts';
+import { ChoroplethMap } from '@/features/pages/ChoroplethMap.ts';
+import { HeatMap } from '@/features/pages/HeatMap.ts';
+import { ScatterplotGraph } from '@/features/pages/ScatterplotGraph.ts';
+import { TreemapDiagram } from '@/features/pages/TreemapDiagram.ts';
 
-interface VisualProps {
-  title: string;
-  text: string;
-}
+const PAGES = {
+  '': Grid()
+};
 
-const VisualCards = (VISUALS as VisualProps[]).map(
-  visual => `
-    <figure style='min-height:11rem;max-height:13rem' class='justify-content-between card card-body col-sm-5 col-lg-3'>
-      <span>
-        <h4 class='card-title'>
-          ${visual.title}
-        </h4>
-        <figcaption class='card-text'>
-          ${visual.text}
-        </figcaption>
-      </span>
-      <a
-        style='max-width:fit-content'
-        class='mt-1 link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover user-select-none fs-5'
-        href=${visual.title.toLowerCase().replaceAll(' ', '-')}>
-        Show
-      </a>
-    </figure>
-  `
+const TOOLS = [
+  BarChart(),
+  ScatterplotGraph(),
+  HeatMap(),
+  ChoroplethMap(),
+  TreemapDiagram()
+];
+
+const links = (VISUALS as VisualProps[]).map(visual =>
+  visual.title.toLowerCase().replaceAll(' ', '-')
 );
 
-export const App = (): string => {
-  return `
-    <main class='my-4 container row justify-content-center align-items-center column-gap-3'>
-      ${VisualCards.join('')}
-    </main>
-  `;
-};
+links.forEach((link, index) => {
+  PAGES[link as keyof typeof PAGES] = TOOLS[index];
+});
+
+export const App = (): string => `
+  <main class='my-4 container row justify-content-center align-items-center column-gap-3'>
+    ${PAGES[location.pathname.split('/')[2] as keyof typeof PAGES]}
+  </main>
+`;
