@@ -101,13 +101,17 @@ export const BarChart = (): string => {
             quarterText = 'Q4';
         }
 
-        const mouseX = event.pageX;
+        const mouseX = event.clientX;
 
         const barWidth = +select(event.target as SVGElement).attr('width');
         const svgBounds = (svg.node() as SVGElement).getBoundingClientRect();
 
-        const tooltipLeft = mouseX - svgBounds.left + barWidth + 660;
-        const tooltipTop = svgBounds.top + 240;
+        const tooltipLeft = mouseX + barWidth + 10;
+        let tooltipTop = svgBounds.top + 240;
+
+        if (window.innerWidth < 768) tooltipTop = svgBounds.top + 180;
+
+        if (window.innerWidth < 576) tooltipTop = svgBounds.top + 100;
 
         tooltip
           .style('display', 'block')
@@ -149,5 +153,19 @@ export const BarChart = (): string => {
       <h3>United States GDP</h3>
       <svg id='chart' width='42rem' height='25rem'></svg>
     </div>
+
+    <style>
+      @media (max-width: 48rem) {
+        #chart {
+          transform: scale(0.8);
+        }
+      }
+
+      @media (max-width: 36rem) {
+        #chart {
+          transform: scale(0.5);
+        }
+      }
+    </style>
   `;
 };
