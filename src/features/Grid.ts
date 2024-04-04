@@ -9,7 +9,7 @@ const Grid = (): string =>
   (VISUALS as VisualProps[])
     .map(
       visual => `
-        <figure style='min-height:11rem;max-height:13rem' class='justify-content-between card card-body col-sm-5 col-lg-3'>
+        <figure style='height:14.5rem' class='overflow-y-auto justify-content-between card card-body col-sm-5 col-lg-3'>
           <span>
             <h4 class='card-title'>
               ${visual.title}
@@ -20,9 +20,9 @@ const Grid = (): string =>
           </span>
           <a
             style='max-width:fit-content'
-            class='mt-1 link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover user-select-none fs-5'
+            class='mt-1 nav-link link-body-emphasis link-offset-2 link-underline-opacity-0 link-underline-opacity-75-hover user-select-none fs-5'
             href=${visual.title.toLowerCase().replaceAll(' ', '-')}>
-            Show
+            Show <i class='fa-solid fa-chevron-right fa-sm'></i>
           </a>
         </figure>
       `

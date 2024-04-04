@@ -1,3 +1,4 @@
+import { Back } from '@/components/Back.ts';
 import VISUALS from '@/content/visuals.yaml';
 import { Grid, type VisualProps } from '@/features/Grid.ts';
 import { BarChart } from '@/features/pages/BarChart.ts';
@@ -26,8 +27,15 @@ links.forEach((link, index) => {
   PAGES[link as keyof typeof PAGES] = TOOLS[index];
 });
 
-export const App = (): string => `
-  <main class='my-4 container row justify-content-center align-items-center column-gap-3'>
-    ${PAGES[location.pathname.split('/')[2] as keyof typeof PAGES]}
-  </main>
-`;
+export const App = (): string => {
+  const currPath = location.pathname.split('/')[2];
+
+  return `
+    <main class='my-4 d-flex flex-column align-items-center'>
+      <div class='container row justify-content-center align-items-center column-gap-3'>
+        ${PAGES[currPath as keyof typeof PAGES] || Back()}
+      </div>
+      ${currPath && currPath in PAGES ? Back() : ''}
+    </main>
+  `;
+};
