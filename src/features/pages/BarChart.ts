@@ -8,7 +8,9 @@ export const BarChart = (): string => {
     .then((data: { data: [string, number][] }) => {
       const gdpData = data.data;
 
-      const svg = select('#chart');
+      const svg = select('#chart')
+        .append('g')
+        .attr('transform', 'translate(40, 20)');
 
       svg
         .append('text')
@@ -16,7 +18,6 @@ export const BarChart = (): string => {
         .attr('x', -240)
         .attr('y', 20)
         .attr('transform', 'rotate(-90)')
-        .style('user-select', 'none')
         .text('Gross Domestic Product');
 
       const years = gdpData.map(([date]) => +date.substring(0, 4));
@@ -46,25 +47,46 @@ export const BarChart = (): string => {
         .selectAll('.tick')
         .filter((_, i, nodes) => {
           const tick = nodes[i];
-          if (!tick || !(tick instanceof Element)) return true; // Handle the case where tick is null or not an Element
+          if (!tick || !(tick instanceof Element)) return true;
+
           const textElement = tick.querySelector('text');
           return textElement === null || textElement.textContent?.trim() === '';
         })
-        .style('display', 'none');
+        .remove();
 
       const yScale = scaleLinear()
         .domain([0, max(gdpData, ([, value]) => value) ?? 0])
         .range([350, 0]);
 
-      const yAxis = axisLeft(yScale);
+      const yAxis = axisLeft(yScale).tickFormat(
+        d => `$${(+d / 1000).toString()} T`
+      );
       svg.append('g').attr('id', 'y-axis').call(yAxis);
 
       const handleMouseOver = (
         event: MouseEvent,
         d: [string, number]
       ): void => {
+        let tooltip = select<HTMLDivElement, unknown>('#tooltip');
+        if (tooltip.empty()) {
+          tooltip = select('body')
+            .append('div')
+            .attr('id', 'tooltip')
+            .style('position', 'absolute')
+            .style('background-color', '#f8f9fa') // bootstrap-light
+            .style('border', '1px solid #6c757d') // bootstrap-secondary
+            .style('border-radius', '.375rem')
+            .style('width', '7rem')
+            .style('user-select', 'none')
+            .style('padding', '10px')
+            .style('display', 'none');
+        }
+
+        select(event.target as SVGElement).attr('fill', '#d1e7dd'); // bootstrap-success-subtle
+
         const [year, quarter] = d[0].split('-');
         let quarterText = '';
+
         switch (quarter) {
           case '01':
             quarterText = 'Q1';
@@ -78,15 +100,25 @@ export const BarChart = (): string => {
           case '10':
             quarterText = 'Q4';
         }
-        select('#tooltip')
+
+        const mouseX = event.pageX;
+
+        const barWidth = +select(event.target as SVGElement).attr('width');
+        const svgBounds = (svg.node() as SVGElement).getBoundingClientRect();
+
+        const tooltipLeft = mouseX - svgBounds.left + barWidth + 660;
+        const tooltipTop = svgBounds.top + 240;
+
+        tooltip
           .style('display', 'block')
           .html(`${year} ${quarterText}<br>$${d[1].toLocaleString()} B`)
           .attr('data-date', d[0])
-          .style('left', event.pageX.toString() + 'px')
-          .style('top', (event.pageY - 50).toString() + 'px');
+          .style('left', `${tooltipLeft.toString()}px`)
+          .style('top', `${tooltipTop.toString()}px`);
       };
 
-      const handleMouseOut = (): void => {
+      const handleMouseOut = (event: MouseEvent): void => {
+        select(event.target as SVGElement).attr('fill', '#198754'); // bootstrap-success
         select('#tooltip').style('display', 'none');
       };
 
@@ -113,9 +145,9 @@ export const BarChart = (): string => {
     });
 
   return `
-    <div class='d-flex flex-column justify-content-center align-items-center'>
-      <svg id='chart' width='50%' height='400'></svg>
-      <div id='tooltip'></div>
+    <div class='d-flex flex-column justify-content-center align-items-center gap-4 user-select-none'>
+      <h3>United States GDP</h3>
+      <svg id='chart' width='42rem' height='25rem'></svg>
     </div>
   `;
 };
