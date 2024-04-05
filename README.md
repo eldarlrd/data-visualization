@@ -4,8 +4,9 @@
 
 > Data Visualization Compendium uses
 > - **[D3](https://d3js.org)**
-> - **[Bootstrap](https://getbootstrap.com)**
 > - **[TypeScript](https://typescriptlang.org)**
+> - **[Font Awesome](https://fontawesome.com)**
+> - **[Bootstrap](https://getbootstrap.com)**
 > - **[Vite](https://vitejs.dev)**
 >
 > for displaying the charts, maps, and graphs.
