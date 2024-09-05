@@ -37,7 +37,6 @@
     "@eslint/js": "^9.9.1",
     "@modyfi/vite-plugin-yaml": "^1.1.0",
     "@types/d3": "^7.4.3",
-    "@types/eslint__js": "^8.42.3",
     "eslint": "^9.9.1",
     "eslint-config-prettier": "^9.1.0",
     "eslint-import-resolver-typescript": "^3.6.3",

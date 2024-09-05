@@ -1,12 +1,11 @@
-import noRelativeImportPaths from 'eslint-plugin-no-relative-import-paths';
-import importPlugin, { __esModule } from 'eslint-plugin-import';
-import nodePlugin from 'eslint-plugin-n';
-import pluginPromise from 'eslint-plugin-promise';
-import eslintConfigPrettier from 'eslint-config-prettier';
-
+// @ts-nocheck
 import js from '@eslint/js';
+import eslintConfigPrettier from 'eslint-config-prettier';
+import { flatConfigs } from 'eslint-plugin-import';
+import nodePlugin from 'eslint-plugin-n';
+import noRelativeImportPaths from 'eslint-plugin-no-relative-import-paths';
+import pluginPromise from 'eslint-plugin-promise';
 import globals from 'globals';
-// import type { Linter } from 'eslint';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config({
@@ -14,7 +13,7 @@ export default tseslint.config({
     js.configs.recommended,
     ...tseslint.configs.strictTypeChecked,
     ...tseslint.configs.stylisticTypeChecked,
-    importPlugin.flatConfigs.recommended,
+    flatConfigs.recommended,
     nodePlugin.configs['flat/recommended-module'],
     pluginPromise.configs['flat/recommended'],
     eslintConfigPrettier
@@ -59,4 +58,4 @@ export default tseslint.config({
     'prefer-const': 2,
     eqeqeq: 2
   }
-});
+}) satisfies FlatConfig.ConfigArray;
