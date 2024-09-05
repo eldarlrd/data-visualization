@@ -36,19 +36,19 @@
   "devDependencies": {
     "@modyfi/vite-plugin-yaml": "^1.1.0",
     "@types/d3": "^7.4.3",
-    "@typescript-eslint/eslint-plugin": "^7.16.0",
-    "@typescript-eslint/parser": "^7.16.0",
-    "eslint": "^9.7.0",
+    "@typescript-eslint/eslint-plugin": "^8.4.0",
+    "@typescript-eslint/parser": "^8.4.0",
+    "eslint": "^9.9.1",
     "eslint-config-prettier": "^9.1.0",
-    "eslint-import-resolver-typescript": "^3.6.1",
-    "eslint-plugin-import": "^2.29.1",
-    "eslint-plugin-n": "^17.9.0",
+    "eslint-import-resolver-typescript": "^3.6.3",
+    "eslint-plugin-import": "^2.30.0",
+    "eslint-plugin-n": "^17.10.2",
     "eslint-plugin-no-relative-import-paths": "^1.5.5",
-    "eslint-plugin-promise": "^6.4.0",
+    "eslint-plugin-promise": "^7.1.0",
     "gh-pages": "^6.1.1",
     "prettier": "^3.3.3",
-    "sass": "^1.77.8",
-    "typescript": "^5.5.3",
-    "vite": "^5.3.3"
+    "sass": "^1.78.0",
+    "typescript": "^5.5.4",
+    "vite": "^5.4.3"
   }
 }
