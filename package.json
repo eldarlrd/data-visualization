@@ -16,7 +16,7 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "deployer": "gh-pages -b prod -m 'build(prod): deployment' -d dist",
-    "lint": "eslint src --flag unstable_ts_config --report-unused-disable-directives",
+    "lint": "eslint src --flag unstable_ts_config",
     "pretty": "prettier '{src,__{tests,mocks,snapshots}__}/**/*.{ts,tsx}' --write",
     "format": "pnpm lint --fix && pnpm pretty"
   },
