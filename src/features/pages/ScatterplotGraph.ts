@@ -57,35 +57,20 @@ export const ScatterplotGraph = (): string => {
 
       svg
         .append('g')
-        .attr('transform', `translate(0, 350)`)
         .call(axisBottom(xScale))
-        .append('text')
-        .attr('x', 600 / 2)
-        .attr('y', 35)
-        .style('text-anchor', 'middle')
-        .text('Year');
+        .attr('transform', `translate(0, 350)`);
 
-      // Add Y-axis
-      svg
-        .append('g')
-        .call(axisLeft(yScale))
-        .append('text')
-        .attr('transform', 'rotate(-90)')
-        .attr('x', -350 / 2)
-        .attr('y', -40)
-        .style('text-anchor', 'middle')
-        .text('Time in Minutes');
+      svg.append('g').call(axisLeft(yScale));
 
-      // Plot data points (scatterplot)
       svg
         .selectAll('circle')
         .data(cyclingData)
         .enter()
         .append('circle')
+        .attr('r', 6)
         .attr('cx', d => xScale(d.Year.toString()) ?? 0)
         .attr('cy', d => yScale(convertTime(d.Time)))
-        .attr('r', 5)
-        .style('fill', 'blue');
+        .style('fill', '#dc3545'); // bootstrap-danger;
 
       return;
     })
