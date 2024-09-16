@@ -61,6 +61,7 @@ export const BarChart = (): string => {
       const yAxis = axisLeft(yScale).tickFormat(
         d => `$${(+d / 1000).toString()} T`
       );
+
       svg.append('g').attr('id', 'y-axis').call(yAxis);
 
       const handleMouseOver = (

@@ -8,6 +8,8 @@ import {
   select
 } from 'd3';
 
+import COUNTRY_FLAGS from '@/content/flags.yaml';
+
 interface CyclistAllegation {
   Time: string;
   Place: number;
@@ -79,6 +81,55 @@ export const ScatterplotGraph = (): string => {
       svg.append('g').attr('transform', `translate(0, 350)`).call(xAxis);
       svg.append('g').call(yAxis);
 
+      const handleMouseOver = (
+        event: MouseEvent,
+        d: CyclistAllegation
+      ): void => {
+        let tooltip = select<HTMLDivElement, unknown>('#tooltip');
+        if (tooltip.empty()) {
+          tooltip = select('body')
+            .append('div')
+            .attr('id', 'tooltip')
+            .style('position', 'absolute')
+            .style('background-color', '#f8f9fa') // bs-light
+            .style('border', '1px solid #6c757d') // bs-secondary
+            .style('border-radius', '.375rem')
+            .style('width', '12rem')
+            .style('user-select', 'none')
+            .style('padding', '10px')
+            .style('display', 'none');
+        }
+
+        select(event.target as SVGElement).style(
+          'fill',
+          d => ((d as CyclistAllegation).Doping ? '#dc3545' : '#0d6efd') // bs-danger & bs-primary
+        );
+
+        const mouseX = event.clientX;
+        const mouseY = event.clientY;
+
+        const circleWidth = +select(event.target as SVGElement).attr('width');
+
+        const tooltipLeft = mouseX + circleWidth + 10;
+        const tooltipTop = mouseY + circleWidth + 10;
+
+        tooltip
+          .style('display', 'block')
+          .html(
+            `${COUNTRY_FLAGS[d.Nationality] as string} ${d.Name}<br>${d.Time} | ${d.Year.toString()}<br><span id='allegation'>${d.Doping}</span>`
+          )
+          .style('left', `${tooltipLeft.toString()}px`)
+          .style('top', `${tooltipTop.toString()}px`);
+      };
+
+      const handleMouseOut = (event: MouseEvent): void => {
+        select(event.target as SVGElement).style(
+          'fill',
+          d => ((d as CyclistAllegation).Doping ? '#b02a37' : '#0a58ca') // bs-danger-subtle & bs-primary-subtle
+        );
+        select('#tooltip').style('display', 'none');
+      };
+
       svg
         .selectAll('circle')
         .data(cyclingData)
@@ -87,7 +138,9 @@ export const ScatterplotGraph = (): string => {
         .attr('r', 6)
         .attr('cx', d => xScale(d.Year.toString()) ?? 0)
         .attr('cy', d => yScale(convertTime(d.Time)))
-        .style('fill', '#b02a37'); // bs-danger-subtle
+        .style('fill', d => (d.Doping ? '#b02a37' : '#0a58ca')) // bs-danger-subtle & bs-primary-subtle
+        .on('mouseover', handleMouseOver)
+        .on('mouseout', handleMouseOut);
 
       return;
     })
@@ -102,6 +155,10 @@ export const ScatterplotGraph = (): string => {
     </div>
 
     <style>
+      #allegation {
+        color: #b02a37;
+      }
+
       @media (max-width: 48rem) {
         #graph {
           transform: scale(0.8);
