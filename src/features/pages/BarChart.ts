@@ -1,12 +1,15 @@
 import { axisBottom, axisLeft, max, scaleBand, scaleLinear, select } from 'd3';
 
+import { getData } from '@/api.ts';
+
+interface GDPShape {
+  data: [string, number][];
+}
+
 export const BarChart = (): string => {
-  fetch(
-    'https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/GDP-data.json'
-  )
-    .then(response => response.json())
-    .then((data: { data: [string, number][] }) => {
-      const gdpData = data.data;
+  getData('gdp')
+    .then(data => {
+      const gdpData = (data as GDPShape).data;
 
       const svg = select('#chart')
         .append('g')

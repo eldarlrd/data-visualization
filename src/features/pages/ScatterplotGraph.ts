@@ -8,6 +8,7 @@ import {
   select
 } from 'd3';
 
+import { getData } from '@/api.ts';
 import COUNTRY_FLAGS from '@/content/flags.yaml';
 
 interface CyclistAllegation {
@@ -33,12 +34,9 @@ const formatTime = (time: unknown): string => {
 };
 
 export const ScatterplotGraph = (): string => {
-  fetch(
-    'https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/cyclist-data.json'
-  )
-    .then(response => response.json())
-    .then((data: CyclistAllegation[]) => {
-      const cyclingData = data;
+  getData('doping')
+    .then(data => {
+      const cyclingData = data as CyclistAllegation[];
 
       const svg = select('#graph')
         .append('g')
@@ -47,7 +45,7 @@ export const ScatterplotGraph = (): string => {
       svg
         .append('text')
         .attr('id', 'title')
-        .attr('x', -230)
+        .attr('x', -240)
         .attr('y', 20)
         .attr('transform', 'rotate(-90)')
         .text('Time in Minutes');
