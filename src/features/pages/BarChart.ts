@@ -73,8 +73,8 @@ export const BarChart = (): string => {
             .append('div')
             .attr('id', 'tooltip')
             .style('position', 'absolute')
-            .style('background-color', '#f8f9fa') // bootstrap-light
-            .style('border', '1px solid #6c757d') // bootstrap-secondary
+            .style('background-color', '#f8f9fa') // bs-light
+            .style('border', '1px solid #6c757d') // bs-secondary
             .style('border-radius', '.375rem')
             .style('width', '7rem')
             .style('user-select', 'none')
@@ -82,7 +82,7 @@ export const BarChart = (): string => {
             .style('display', 'none');
         }
 
-        select(event.target as SVGElement).attr('fill', '#d1e7dd'); // bootstrap-success-subtle
+        select(event.target as SVGElement).attr('fill', '#d1e7dd'); // bs-success-subtle
 
         const [year, quarter] = d[0].split('-');
         let quarterText = '';
@@ -122,7 +122,7 @@ export const BarChart = (): string => {
       };
 
       const handleMouseOut = (event: MouseEvent): void => {
-        select(event.target as SVGElement).attr('fill', '#198754'); // bootstrap-success
+        select(event.target as SVGElement).attr('fill', '#198754'); // bs-success
         select('#tooltip').style('display', 'none');
       };
 
@@ -132,7 +132,7 @@ export const BarChart = (): string => {
         .enter()
         .append('rect')
         .attr('class', 'bar')
-        .attr('fill', '#198754') // bootstrap-success
+        .attr('fill', '#198754') // bs-success
         .attr('data-date', d => d[0])
         .attr('data-gdp', d => d[1])
         .attr('x', d => xScale(d[0]) ?? 0)
