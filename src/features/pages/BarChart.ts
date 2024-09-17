@@ -21,7 +21,8 @@ const QUARTERS: RecordProps = {
 };
 
 const handleMouseOver = (event: MouseEvent, d: [string, number]): void => {
-  createTooltip('7rem');
+  const tooltipWidth = 16 * 7;
+  createTooltip(tooltipWidth);
 
   select(event.target as SVGElement).style('fill', COLORS.successSubtle);
 
@@ -30,13 +31,17 @@ const handleMouseOver = (event: MouseEvent, d: [string, number]): void => {
 
   const mouseX = event.clientX;
 
+  const windowWidth = window.innerWidth;
   const barWidth = +select(event.target as SVGElement).attr('width');
   const svgBounds = (
     select('#chart').node() as SVGElement
   ).getBoundingClientRect();
 
-  const tooltipLeft = mouseX + barWidth + 10;
   let tooltipTop = svgBounds.top + 240;
+  let tooltipLeft = mouseX + barWidth + 10;
+
+  if (tooltipLeft + tooltipWidth > windowWidth)
+    tooltipLeft = windowWidth - tooltipWidth - 10;
 
   if (window.innerWidth < 768) tooltipTop = svgBounds.top + 180;
 

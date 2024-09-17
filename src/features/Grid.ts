@@ -20,7 +20,7 @@ const COLORS: RecordProps = {
   dangerSubtle: '#b02a37'
 };
 
-const createTooltip = (width: string): void => {
+const createTooltip = (width: number): void => {
   let tooltip = select<HTMLDivElement, unknown>('#tooltip');
   if (tooltip.empty()) {
     tooltip = select('body')
@@ -30,7 +30,7 @@ const createTooltip = (width: string): void => {
       .style('background-color', COLORS.light)
       .style('border', `1px solid ${COLORS.secondary}`)
       .style('border-radius', '.375rem')
-      .style('width', width)
+      .style('width', width.toString() + 'px')
       .style('user-select', 'none')
       .style('padding', '10px')
       .style('opacity', '0.975')

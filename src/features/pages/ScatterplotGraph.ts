@@ -18,7 +18,7 @@ import {
   createTooltip
 } from '@/features/Grid.ts';
 
-interface CyclistAllegation {
+interface DopingAllegation {
   Time: string;
   Place: number;
   Seconds: string;
@@ -40,20 +40,25 @@ const formatTime = (time: unknown): string => {
   return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 };
 
-const handleMouseOver = (event: MouseEvent, d: CyclistAllegation): void => {
-  createTooltip('12rem');
+const handleMouseOver = (event: MouseEvent, d: DopingAllegation): void => {
+  const tooltipWidth = 16 * 12;
+  createTooltip(tooltipWidth);
 
   select(event.target as SVGElement).style('fill', d =>
-    (d as CyclistAllegation).Doping ? COLORS.danger : COLORS.primary
+    (d as DopingAllegation).Doping ? COLORS.danger : COLORS.primary
   );
 
   const mouseX = event.clientX;
   const mouseY = event.clientY;
 
   const circleWidth = +select(event.target as SVGElement).attr('width');
+  const windowWidth = window.innerWidth;
 
-  const tooltipLeft = mouseX + circleWidth + 10;
   const tooltipTop = mouseY + circleWidth + 10;
+  let tooltipLeft = mouseX + 10;
+
+  if (tooltipLeft + tooltipWidth > windowWidth)
+    tooltipLeft = windowWidth - tooltipWidth - 10;
 
   select('#tooltip')
     .style('display', 'block')
@@ -76,12 +81,12 @@ const handleMouseOver = (event: MouseEvent, d: CyclistAllegation): void => {
 
 const handleMouseOut = (event: MouseEvent): void => {
   select(event.target as SVGElement).style('fill', d =>
-    (d as CyclistAllegation).Doping ? COLORS.dangerSubtle : COLORS.primarySubtle
+    (d as DopingAllegation).Doping ? COLORS.dangerSubtle : COLORS.primarySubtle
   );
   select('#tooltip').style('display', 'none');
 };
 
-const handleClick = (_: MouseEvent, d: CyclistAllegation): void => {
+const handleClick = (_: MouseEvent, d: DopingAllegation): void => {
   if (d.URL && matchMedia('(pointer:fine)').matches)
     window.open(d.URL, '_blank');
 };
@@ -111,7 +116,7 @@ const createLegend = (): void => {
   });
 };
 
-const renderChart = (cyclingData: CyclistAllegation[]): void => {
+const renderChart = (dopingData: DopingAllegation[]): void => {
   const svg = select('#graph')
     .append('g')
     .attr('transform', 'translate(40, 20)');
@@ -124,7 +129,7 @@ const renderChart = (cyclingData: CyclistAllegation[]): void => {
     .attr('transform', 'rotate(-90)')
     .text('Time in Minutes');
 
-  const sortedYears = cyclingData.map(d => d.Year);
+  const sortedYears = dopingData.map(d => d.Year);
   sortedYears.sort((a, b) => a - b);
 
   const xScale = scaleBand()
@@ -133,10 +138,8 @@ const renderChart = (cyclingData: CyclistAllegation[]): void => {
     .paddingOuter(0.625)
     .paddingInner(1);
 
-  const maxTime =
-    max(cyclingData, d => (d.Time ? convertTime(d.Time) : 0)) ?? 0;
-  const minTime =
-    min(cyclingData, d => (d.Time ? convertTime(d.Time) : 0)) ?? 0;
+  const maxTime = max(dopingData, d => (d.Time ? convertTime(d.Time) : 0)) ?? 0;
+  const minTime = min(dopingData, d => (d.Time ? convertTime(d.Time) : 0)) ?? 0;
 
   const yScale = scaleLinear().domain([maxTime, minTime]).range([350, 0]);
 
@@ -153,7 +156,7 @@ const renderChart = (cyclingData: CyclistAllegation[]): void => {
 
   svg
     .selectAll('circle')
-    .data(cyclingData)
+    .data(dopingData)
     .enter()
     .append('circle')
     .attr('r', 6)
@@ -169,9 +172,9 @@ const renderChart = (cyclingData: CyclistAllegation[]): void => {
 };
 
 export const ScatterplotGraph = (): string => {
-  getData('cycling')
+  getData('doping')
     .then(data => {
-      renderChart(data as CyclistAllegation[]);
+      renderChart(data as DopingAllegation[]);
       return;
     })
     .catch((error: unknown) => {

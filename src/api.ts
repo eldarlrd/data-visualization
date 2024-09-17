@@ -2,7 +2,7 @@ import { type RecordProps } from '@/features/Grid.ts';
 
 const SOURCES: RecordProps = {
   gdp: 'https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/GDP-data.json',
-  cycling:
+  doping:
     'https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/cyclist-data.json'
 };
 
