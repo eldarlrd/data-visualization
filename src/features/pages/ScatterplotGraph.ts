@@ -9,7 +9,14 @@ import {
 } from 'd3';
 
 import { getData } from '@/api.ts';
-import COUNTRY_FLAGS from '@/content/flags.yaml';
+import GLOBALS from '@/content/globals.yaml';
+import PAGES from '@/content/pages.yaml';
+import {
+  COLORS,
+  type RecordProps,
+  type PageProps,
+  createTooltip
+} from '@/features/Grid.ts';
 
 interface CyclistAllegation {
   Time: string;
@@ -33,113 +40,104 @@ const formatTime = (time: unknown): string => {
   return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 };
 
+const handleMouseOver = (event: MouseEvent, d: CyclistAllegation): void => {
+  createTooltip('12rem');
+
+  select(event.target as SVGElement).style('fill', d =>
+    (d as CyclistAllegation).Doping ? COLORS.danger : COLORS.primary
+  );
+
+  const mouseX = event.clientX;
+  const mouseY = event.clientY;
+
+  const circleWidth = +select(event.target as SVGElement).attr('width');
+
+  const tooltipLeft = mouseX + circleWidth + 10;
+  const tooltipTop = mouseY + circleWidth + 10;
+
+  select('#tooltip')
+    .style('display', 'block')
+    .html(
+      `
+      ${(GLOBALS as { FLAGS: RecordProps }).FLAGS[d.Nationality]}
+      <strong>
+        ${d.Name}
+      </strong>
+      <br>
+        ${d.Time} | ${d.Year.toString()}
+      <br>
+      <span id='allegation'>
+        ${d.Doping}
+      </span>`
+    )
+    .style('left', `${tooltipLeft.toString()}px`)
+    .style('top', `${tooltipTop.toString()}px`);
+};
+
+const handleMouseOut = (event: MouseEvent): void => {
+  select(event.target as SVGElement).style('fill', d =>
+    (d as CyclistAllegation).Doping ? COLORS.dangerSubtle : COLORS.primarySubtle
+  );
+  select('#tooltip').style('display', 'none');
+};
+
+const renderChart = (cyclingData: CyclistAllegation[]): void => {
+  const svg = select('#graph')
+    .append('g')
+    .attr('transform', 'translate(40, 20)');
+
+  svg
+    .append('text')
+    .attr('id', 'title')
+    .attr('x', -240)
+    .attr('y', 20)
+    .attr('transform', 'rotate(-90)')
+    .text('Time in Minutes');
+
+  const sortedYears = cyclingData.map(d => d.Year);
+  sortedYears.sort((a, b) => a - b);
+
+  const xScale = scaleBand()
+    .domain(sortedYears.map(year => year.toString()))
+    .range([0, 600])
+    .paddingOuter(0.625)
+    .paddingInner(1);
+
+  const maxTime =
+    max(cyclingData, d => (d.Time ? convertTime(d.Time) : 0)) ?? 0;
+  const minTime =
+    min(cyclingData, d => (d.Time ? convertTime(d.Time) : 0)) ?? 0;
+
+  const yScale = scaleLinear().domain([maxTime, minTime]).range([350, 0]);
+
+  const tickValues = Array.from(
+    { length: Math.ceil(((maxTime - minTime) * 60) / 15) + 1 },
+    (_, i) => minTime + (i * 15) / 60
+  );
+
+  const xAxis = axisBottom(xScale);
+  const yAxis = axisLeft(yScale).tickValues(tickValues).tickFormat(formatTime);
+
+  svg.append('g').attr('transform', `translate(0, 350)`).call(xAxis);
+  svg.append('g').call(yAxis);
+
+  svg
+    .selectAll('circle')
+    .data(cyclingData)
+    .enter()
+    .append('circle')
+    .attr('r', 6)
+    .attr('cx', d => xScale(d.Year.toString()) ?? 0)
+    .attr('cy', d => yScale(convertTime(d.Time)))
+    .style('fill', d => (d.Doping ? COLORS.dangerSubtle : COLORS.primarySubtle))
+    .on('mouseover', handleMouseOver)
+    .on('mouseout', handleMouseOut);
+};
+
 export const ScatterplotGraph = (): string => {
-  getData('doping')
+  getData('cycling')
     .then(data => {
-      const cyclingData = data as CyclistAllegation[];
-
-      const svg = select('#graph')
-        .append('g')
-        .attr('transform', 'translate(40, 20)');
-
-      svg
-        .append('text')
-        .attr('id', 'title')
-        .attr('x', -240)
-        .attr('y', 20)
-        .attr('transform', 'rotate(-90)')
-        .text('Time in Minutes');
-
-      const sortedYears = cyclingData.map(d => d.Year);
-      sortedYears.sort((a, b) => a - b);
-
-      const xScale = scaleBand()
-        .domain(sortedYears.map(year => year.toString()))
-        .range([0, 600])
-        .paddingOuter(0.625)
-        .paddingInner(1);
-
-      const maxTime =
-        max(cyclingData, d => (d.Time ? convertTime(d.Time) : 0)) ?? 0;
-      const minTime =
-        min(cyclingData, d => (d.Time ? convertTime(d.Time) : 0)) ?? 0;
-
-      const yScale = scaleLinear().domain([maxTime, minTime]).range([350, 0]);
-
-      const tickValues = Array.from(
-        { length: Math.ceil(((maxTime - minTime) * 60) / 15) + 1 },
-        (_, i) => minTime + (i * 15) / 60
-      );
-
-      const xAxis = axisBottom(xScale);
-      const yAxis = axisLeft(yScale)
-        .tickValues(tickValues)
-        .tickFormat(formatTime);
-
-      svg.append('g').attr('transform', `translate(0, 350)`).call(xAxis);
-      svg.append('g').call(yAxis);
-
-      const handleMouseOver = (
-        event: MouseEvent,
-        d: CyclistAllegation
-      ): void => {
-        let tooltip = select<HTMLDivElement, unknown>('#tooltip');
-        if (tooltip.empty()) {
-          tooltip = select('body')
-            .append('div')
-            .attr('id', 'tooltip')
-            .style('position', 'absolute')
-            .style('background-color', '#f8f9fa') // bs-light
-            .style('border', '1px solid #6c757d') // bs-secondary
-            .style('border-radius', '.375rem')
-            .style('width', '12rem')
-            .style('user-select', 'none')
-            .style('padding', '10px')
-            .style('display', 'none');
-        }
-
-        select(event.target as SVGElement).style(
-          'fill',
-          d => ((d as CyclistAllegation).Doping ? '#dc3545' : '#0d6efd') // bs-danger & bs-primary
-        );
-
-        const mouseX = event.clientX;
-        const mouseY = event.clientY;
-
-        const circleWidth = +select(event.target as SVGElement).attr('width');
-
-        const tooltipLeft = mouseX + circleWidth + 10;
-        const tooltipTop = mouseY + circleWidth + 10;
-
-        tooltip
-          .style('display', 'block')
-          .html(
-            `${COUNTRY_FLAGS[d.Nationality] as string} ${d.Name}<br>${d.Time} | ${d.Year.toString()}<br><span id='allegation'>${d.Doping}</span>`
-          )
-          .style('left', `${tooltipLeft.toString()}px`)
-          .style('top', `${tooltipTop.toString()}px`);
-      };
-
-      const handleMouseOut = (event: MouseEvent): void => {
-        select(event.target as SVGElement).style(
-          'fill',
-          d => ((d as CyclistAllegation).Doping ? '#b02a37' : '#0a58ca') // bs-danger-subtle & bs-primary-subtle
-        );
-        select('#tooltip').style('display', 'none');
-      };
-
-      svg
-        .selectAll('circle')
-        .data(cyclingData)
-        .enter()
-        .append('circle')
-        .attr('r', 6)
-        .attr('cx', d => xScale(d.Year.toString()) ?? 0)
-        .attr('cy', d => yScale(convertTime(d.Time)))
-        .style('fill', d => (d.Doping ? '#b02a37' : '#0a58ca')) // bs-danger-subtle & bs-primary-subtle
-        .on('mouseover', handleMouseOver)
-        .on('mouseout', handleMouseOut);
-
+      renderChart(data as CyclistAllegation[]);
       return;
     })
     .catch((error: unknown) => {
@@ -148,7 +146,7 @@ export const ScatterplotGraph = (): string => {
 
   return `
     <div class='d-flex flex-column justify-content-center align-items-center gap-4 user-select-none'>
-      <h3>Doping in Bicycle Racing</h3>
+      <h3>${(PAGES[1] as PageProps).title.toString()}</h3>
       <svg id='graph' width='42rem' height='25rem'></svg>
     </div>
 

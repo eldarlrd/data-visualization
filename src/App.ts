@@ -1,13 +1,13 @@
 import { Back } from '@/components/Back.ts';
-import VISUALS from '@/content/visuals.yaml';
-import { Grid, type VisualProps } from '@/features/Grid.ts';
+import PAGES from '@/content/pages.yaml';
+import { Grid, titleToLink, type PageProps } from '@/features/Grid.ts';
 import { BarChart } from '@/features/pages/BarChart.ts';
 import { ChoroplethMap } from '@/features/pages/ChoroplethMap.ts';
 import { HeatMap } from '@/features/pages/HeatMap.ts';
 import { ScatterplotGraph } from '@/features/pages/ScatterplotGraph.ts';
 import { TreemapDiagram } from '@/features/pages/TreemapDiagram.ts';
 
-const PAGES = {
+const PAGE_LIST = {
   '': Grid()
 };
 
@@ -19,12 +19,10 @@ const TOOLS = [
   TreemapDiagram()
 ];
 
-const links = (VISUALS as VisualProps[]).map(visual =>
-  visual.title.toLowerCase().replaceAll(' ', '-')
-);
+const links = (PAGES as PageProps[]).map(page => titleToLink(page.title));
 
 links.forEach((link, index) => {
-  PAGES[link as keyof typeof PAGES] = TOOLS[index];
+  PAGE_LIST[link as keyof typeof PAGE_LIST] = TOOLS[index];
 });
 
 export const App = (): string => {
@@ -33,9 +31,9 @@ export const App = (): string => {
   return `
     <main class='my-4 d-flex flex-column align-items-center'>
       <div class='container row justify-content-center align-items-center column-gap-3'>
-        ${PAGES[currPath as keyof typeof PAGES] || Back()}
+        ${PAGE_LIST[currPath as keyof typeof PAGE_LIST] || Back()}
       </div>
-      ${currPath && currPath in PAGES ? Back() : ''}
+      ${currPath && currPath in PAGE_LIST ? Back() : ''}
     </main>
   `;
 };
