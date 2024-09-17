@@ -81,6 +81,36 @@ const handleMouseOut = (event: MouseEvent): void => {
   select('#tooltip').style('display', 'none');
 };
 
+const handleClick = (_: MouseEvent, d: CyclistAllegation): void => {
+  if (d.URL && matchMedia('(pointer:fine)').matches)
+    window.open(d.URL, '_blank');
+};
+
+const createLegend = (): void => {
+  const svg = select('#graph');
+
+  const legendData = [
+    { color: COLORS.dangerSubtle, label: 'Doping' },
+    { color: COLORS.primarySubtle, label: 'No Doping' }
+  ];
+
+  const legendGroup = svg.append('g').attr('transform', 'translate(540, 20)');
+
+  legendData.forEach((item, index) => {
+    const legendItem = legendGroup
+      .append('g')
+      .attr('transform', `translate(0, ${(index * 20).toString()})`);
+
+    legendItem
+      .append('rect')
+      .attr('width', 15)
+      .attr('height', 15)
+      .attr('fill', item.color);
+
+    legendItem.append('text').attr('x', 22).attr('y', 14).text(item.label);
+  });
+};
+
 const renderChart = (cyclingData: CyclistAllegation[]): void => {
   const svg = select('#graph')
     .append('g')
@@ -129,9 +159,13 @@ const renderChart = (cyclingData: CyclistAllegation[]): void => {
     .attr('r', 6)
     .attr('cx', d => xScale(d.Year.toString()) ?? 0)
     .attr('cy', d => yScale(convertTime(d.Time)))
+    .style('cursor', d => (d.URL ? 'pointer' : 'auto'))
     .style('fill', d => (d.Doping ? COLORS.dangerSubtle : COLORS.primarySubtle))
     .on('mouseover', handleMouseOver)
-    .on('mouseout', handleMouseOut);
+    .on('mouseout', handleMouseOut)
+    .on('click', handleClick);
+
+  createLegend();
 };
 
 export const ScatterplotGraph = (): string => {
