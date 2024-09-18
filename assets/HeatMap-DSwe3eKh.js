@@ -1,0 +1,1 @@
+import{g as r}from"./api-B62J5DUa.js";import{c as t}from"./index-DIb872qn.js";const a=e=>{console.log(e)},c=()=>(r("temperature").then(e=>{a(e)}).catch(e=>{e instanceof Error&&console.error(e)}),t(2,"heat-map"));export{c as HeatMap};
