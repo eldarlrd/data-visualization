@@ -12,7 +12,6 @@ import { getData } from '@/api.ts';
 import GLOBALS from '@/content/globals.yaml';
 import {
   createVisual,
-  createLegend,
   createTooltip,
   handleMouseOut,
   handleClick,
@@ -40,6 +39,26 @@ const legendData = [
     label: 'No Doping'
   }
 ];
+
+const createLegend = (): void => {
+  const svg = select('#graph');
+
+  const legendGroup = svg.append('g').attr('transform', 'translate(540, 20)');
+
+  legendData.forEach((item, index) => {
+    const legendItem = legendGroup
+      .append('g')
+      .attr('transform', `translate(0, ${(index * 20).toString()})`);
+
+    legendItem
+      .append('rect')
+      .attr('width', 15)
+      .attr('height', 15)
+      .attr('fill', item.color);
+
+    legendItem.append('text').attr('x', 22).attr('y', 14).text(item.label);
+  });
+};
 
 const convertTime = (time: string): number => {
   const [minutes, seconds] = time.split(':').map(Number);
@@ -154,7 +173,7 @@ const renderGraph = (dopingData: DopingAllegation[]): void => {
     })
     .on('click', handleClick);
 
-  createLegend(legendData);
+  createLegend();
 };
 
 export const ScatterplotGraph = (): string => {

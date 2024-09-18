@@ -1,5 +1,5 @@
+import { createVisual } from '@/utils.ts';
+
 export const TreemapDiagram = (): string => {
-  return `
-    TreemapDiagram
-  `;
+  return createVisual(4, 'diagram');
 };

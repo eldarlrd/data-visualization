@@ -3,11 +3,6 @@ import { select } from 'd3';
 import GLOBALS from '@/content/globals.yaml';
 import PAGES from '@/content/pages.yaml';
 
-interface LegendProps {
-  color: string;
-  label: string;
-}
-
 interface PageProps {
   title: string;
   text: string;
@@ -64,26 +59,6 @@ const createTooltip = (width: number): void => {
   }
 };
 
-const createLegend = (legendData: LegendProps[]): void => {
-  const svg = select('#data');
-
-  const legendGroup = svg.append('g').attr('transform', 'translate(540, 20)');
-
-  legendData.forEach((item, index) => {
-    const legendItem = legendGroup
-      .append('g')
-      .attr('transform', `translate(0, ${(index * 20).toString()})`);
-
-    legendItem
-      .append('rect')
-      .attr('width', 15)
-      .attr('height', 15)
-      .attr('fill', item.color);
-
-    legendItem.append('text').attr('x', 22).attr('y', 14).text(item.label);
-  });
-};
-
 const handleMouseOut = (event: MouseEvent, fillColor: string): void => {
   select(event.target as SVGElement).style(
     'fill',
@@ -103,7 +78,6 @@ const titleToLink = (title: string): string =>
 export {
   createVisual,
   createTooltip,
-  createLegend,
   handleMouseOut,
   handleClick,
   titleToLink,

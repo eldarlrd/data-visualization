@@ -1,5 +1,5 @@
+import { createVisual } from '@/utils.ts';
+
 export const ChoroplethMap = (): string => {
-  return `
-    ChoroplethMap
-  `;
+  return createVisual(3, 'choropleth-map');
 };

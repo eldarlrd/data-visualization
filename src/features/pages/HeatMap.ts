@@ -1,5 +1,5 @@
+import { createVisual } from '@/utils.ts';
+
 export const HeatMap = (): string => {
-  return `
-    HeatMap
-  `;
+  return createVisual(2, 'heat-map');
 };
