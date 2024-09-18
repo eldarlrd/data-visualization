@@ -69,7 +69,7 @@ const handleMouseOut = (event: MouseEvent, fillColor: string): void => {
 
 const handleClick = (_: MouseEvent, d: { URL: string }): void => {
   if (d.URL && matchMedia('(pointer:fine)').matches)
-    window.open(d.URL, '_blank');
+    window.open(d.URL, '_blank', 'noreferrer');
 };
 
 const titleToLink = (title: string): string =>

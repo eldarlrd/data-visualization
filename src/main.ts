@@ -26,12 +26,16 @@ import { Header } from '@/components/banners/Header.ts';
 
 const root = document.getElementById('root');
 
-if (root)
-  root.innerHTML = `
-    ${Header()}
-    ${await App()}
-    ${Footer()}
-  `;
+const main = async (): Promise<void> => {
+  if (root)
+    root.innerHTML = `
+      ${Header()}
+      ${await App()}
+      ${Footer()}
+    `;
+};
+
+void main();
 
 // Easter Egg
 console.log(
