@@ -29,7 +29,7 @@ const root = document.getElementById('root');
 if (root)
   root.innerHTML = `
     ${Header()}
-    ${App()}
+    ${await App()}
     ${Footer()}
   `;
 

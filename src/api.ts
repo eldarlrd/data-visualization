@@ -3,7 +3,9 @@ import { type RecordProps } from '@/utils.ts';
 const SOURCES: RecordProps = {
   gdp: 'https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/GDP-data.json',
   doping:
-    'https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/cyclist-data.json'
+    'https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/cyclist-data.json',
+  temperature:
+    'https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/global-temperature.json'
 };
 
 export const getData = async <T>(source: string): Promise<T> => {

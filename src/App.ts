@@ -1,38 +1,35 @@
 import { Back } from '@/components/Back.ts';
-import PAGES from '@/content/pages.yaml';
 import { Grid } from '@/features/Grid.ts';
-import { BarChart } from '@/features/pages/BarChart.ts';
-import { ChoroplethMap } from '@/features/pages/ChoroplethMap.ts';
-import { HeatMap } from '@/features/pages/HeatMap.ts';
-import { ScatterplotGraph } from '@/features/pages/ScatterplotGraph.ts';
-import { TreemapDiagram } from '@/features/pages/TreemapDiagram.ts';
-import { type PageProps, titleToLink } from '@/utils.ts';
 
-const PAGE_LIST = {
-  '': Grid()
+type PageLoader = () => Promise<string>;
+type PageMap = Record<string, PageLoader>;
+
+const PAGE_LIST: PageMap = {
+  '': async () => Promise.resolve(Grid()),
+  'us-gdp': async () =>
+    (await import('@/features/pages/BarChart.ts')).BarChart(),
+  'cycling-doping': async () =>
+    (await import('@/features/pages/ScatterplotGraph.ts')).ScatterplotGraph(),
+  'global-temperature': async () =>
+    (await import('@/features/pages/HeatMap.ts')).HeatMap(),
+  'us-education': async () =>
+    (await import('@/features/pages/ChoroplethMap.ts')).ChoroplethMap(),
+  'movie-sales': async () =>
+    (await import('@/features/pages/TreemapDiagram.ts')).TreemapDiagram()
 };
 
-const TOOLS = [
-  BarChart(),
-  ScatterplotGraph(),
-  HeatMap(),
-  ChoroplethMap(),
-  TreemapDiagram()
-];
+const fallbackLoader: PageLoader = async () => Promise.resolve(Back());
 
-const links = (PAGES as PageProps[]).map(page => titleToLink(page.title));
-
-links.forEach((link, index) => {
-  PAGE_LIST[link as keyof typeof PAGE_LIST] = TOOLS[index];
-});
-
-export const App = (): string => {
+export const App = async (): Promise<string> => {
   const currPath = location.pathname.split('/')[2];
+  const loadComponent = PAGE_LIST[currPath] ?? fallbackLoader;
+
+  const pageContent = await loadComponent();
 
   return `
     <main class='my-4 d-flex flex-column align-items-center'>
       <div class='container row justify-content-center align-items-center column-gap-3'>
-        ${PAGE_LIST[currPath as keyof typeof PAGE_LIST] || Back()}
+        ${pageContent}
       </div>
       ${currPath && currPath in PAGE_LIST ? Back() : ''}
     </main>
