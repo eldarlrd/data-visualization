@@ -1,47 +1,7 @@
-import { select } from 'd3';
-
 import PAGES from '@/content/pages.yaml';
+import { type PageProps, titleToLink } from '@/utils.ts';
 
-interface PageProps {
-  title: string;
-  text: string;
-}
-
-type RecordProps = Record<string, string>;
-
-const COLORS: RecordProps = {
-  light: '#f8f9fa',
-  primary: '#0d6efd',
-  primarySubtle: '#0a58ca',
-  secondary: '#6c757d',
-  success: '#198754',
-  successSubtle: '#d1e7dd',
-  danger: '#dc3545',
-  dangerSubtle: '#b02a37'
-};
-
-const createTooltip = (width: number): void => {
-  let tooltip = select<HTMLDivElement, unknown>('#tooltip');
-  if (tooltip.empty()) {
-    tooltip = select('body')
-      .append('div')
-      .attr('id', 'tooltip')
-      .style('position', 'absolute')
-      .style('background-color', COLORS.light)
-      .style('border', `1px solid ${COLORS.secondary}`)
-      .style('border-radius', '.375rem')
-      .style('width', width.toString() + 'px')
-      .style('user-select', 'none')
-      .style('padding', '10px')
-      .style('opacity', '0.975')
-      .style('display', 'none');
-  }
-};
-
-const titleToLink = (title: string): string =>
-  title.split(' ').slice(1).join('-').toLowerCase();
-
-const Grid = (): string =>
+export const Grid = (): string =>
   (PAGES as PageProps[])
     .map(
       page => `
@@ -64,12 +24,3 @@ const Grid = (): string =>
       `
     )
     .join('');
-
-export {
-  COLORS,
-  Grid,
-  createTooltip,
-  titleToLink,
-  type PageProps,
-  type RecordProps
-};

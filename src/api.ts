@@ -1,4 +1,4 @@
-import { type RecordProps } from '@/features/Grid.ts';
+import { type RecordProps } from '@/utils.ts';
 
 const SOURCES: RecordProps = {
   gdp: 'https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/GDP-data.json',

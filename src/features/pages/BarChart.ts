@@ -1,13 +1,13 @@
 import { axisBottom, axisLeft, max, scaleBand, scaleLinear, select } from 'd3';
 
 import { getData } from '@/api.ts';
-import PAGES from '@/content/pages.yaml';
+import GLOBALS from '@/content/globals.yaml';
 import {
-  COLORS,
+  createVisual,
   createTooltip,
-  type PageProps,
+  handleMouseOut,
   type RecordProps
-} from '@/features/Grid.ts';
+} from '@/utils.ts';
 
 interface GDPShape {
   data: [string, number][];
@@ -21,43 +21,60 @@ const QUARTERS: RecordProps = {
 };
 
 const handleMouseOver = (event: MouseEvent, d: [string, number]): void => {
-  const tooltipWidth = 16 * 7;
+  const topDistance = 240;
+  const mediumTopDistance = 180;
+  const smallTopDistance = 100;
+
+  const mediumScreenSize = 768;
+  const smallScreenSize = 576;
+
+  const remSize = 16;
+  const windowPadding = 10;
+  const tooltipWidth = remSize * 7;
   createTooltip(tooltipWidth);
 
-  select(event.target as SVGElement).style('fill', COLORS.successSubtle);
+  select(event.target as SVGElement).style(
+    'fill',
+    (GLOBALS as { COLORS: RecordProps }).COLORS.lightGreen
+  );
 
   const [year, quarter] = d[0].split('-');
   const quarterText = QUARTERS[quarter];
 
   const mouseX = event.clientX;
 
-  const windowWidth = window.innerWidth;
   const barWidth = +select(event.target as SVGElement).attr('width');
+  const windowWidth = window.innerWidth;
   const svgBounds = (
     select('#chart').node() as SVGElement
   ).getBoundingClientRect();
 
-  let tooltipTop = svgBounds.top + 240;
-  let tooltipLeft = mouseX + barWidth + 10;
+  let tooltipTop = svgBounds.top + topDistance;
+  let tooltipLeft = mouseX + barWidth + windowPadding;
 
   if (tooltipLeft + tooltipWidth > windowWidth)
-    tooltipLeft = windowWidth - tooltipWidth - 10;
+    tooltipLeft = windowWidth - tooltipWidth - windowPadding;
 
-  if (window.innerWidth < 768) tooltipTop = svgBounds.top + 180;
+  if (window.innerWidth < mediumScreenSize)
+    tooltipTop = svgBounds.top + mediumTopDistance;
 
-  if (window.innerWidth < 576) tooltipTop = svgBounds.top + 100;
+  if (window.innerWidth < smallScreenSize)
+    tooltipTop = svgBounds.top + smallTopDistance;
 
   select('#tooltip')
     .style('display', 'block')
-    .html(`${year} ${quarterText}<br>$${d[1].toLocaleString()} B`)
+    .html(
+      `
+      <strong>
+        ${year} ${quarterText}
+      </strong>
+      <br>
+      $${d[1].toLocaleString()} B
+    `
+    )
     .attr('data-date', d[0])
-    .style('left', `${tooltipLeft.toString()}px`)
-    .style('top', `${tooltipTop.toString()}px`);
-};
-
-const handleMouseOut = (event: MouseEvent): void => {
-  select(event.target as SVGElement).style('fill', COLORS.success);
-  select('#tooltip').style('display', 'none');
+    .style('top', `${tooltipTop.toString()}px`)
+    .style('left', `${tooltipLeft.toString()}px`);
 };
 
 const renderChart = (gdpData: [string, number][]): void => {
@@ -123,7 +140,7 @@ const renderChart = (gdpData: [string, number][]): void => {
     .enter()
     .append('rect')
     .attr('class', 'bar')
-    .attr('fill', COLORS.success)
+    .attr('fill', (GLOBALS as { COLORS: RecordProps }).COLORS.green)
     .attr('data-date', d => d[0])
     .attr('data-gdp', d => d[1])
     .attr('x', d => xScale(d[0]) ?? 0)
@@ -131,7 +148,9 @@ const renderChart = (gdpData: [string, number][]): void => {
     .attr('width', xScale.bandwidth())
     .attr('height', d => 350 - yScale(d[1]))
     .on('mouseover', handleMouseOver)
-    .on('mouseout', handleMouseOut);
+    .on('mouseout', (e: MouseEvent) => {
+      handleMouseOut(e, 'green');
+    });
 };
 
 export const BarChart = (): string => {
@@ -144,24 +163,5 @@ export const BarChart = (): string => {
       if (error instanceof Error) console.error(error);
     });
 
-  return `
-    <div class='d-flex flex-column justify-content-center align-items-center gap-4 user-select-none'>
-      <h3>${(PAGES[0] as PageProps).title.toString()}</h3>
-      <svg id='chart' width='42rem' height='25rem'></svg>
-    </div>
-
-    <style>
-      @media (max-width: 48rem) {
-        #chart {
-          transform: scale(0.8);
-        }
-      }
-
-      @media (max-width: 36rem) {
-        #chart {
-          transform: scale(0.5);
-        }
-      }
-    </style>
-  `;
+  return createVisual(0, 'chart');
 };

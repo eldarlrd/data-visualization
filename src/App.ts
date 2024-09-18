@@ -1,11 +1,12 @@
 import { Back } from '@/components/Back.ts';
 import PAGES from '@/content/pages.yaml';
-import { Grid, titleToLink, type PageProps } from '@/features/Grid.ts';
+import { Grid } from '@/features/Grid.ts';
 import { BarChart } from '@/features/pages/BarChart.ts';
 import { ChoroplethMap } from '@/features/pages/ChoroplethMap.ts';
 import { HeatMap } from '@/features/pages/HeatMap.ts';
 import { ScatterplotGraph } from '@/features/pages/ScatterplotGraph.ts';
 import { TreemapDiagram } from '@/features/pages/TreemapDiagram.ts';
+import { type PageProps, titleToLink } from '@/utils.ts';
 
 const PAGE_LIST = {
   '': Grid()
