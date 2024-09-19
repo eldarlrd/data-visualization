@@ -37,7 +37,7 @@ export const App = async (): Promise<string> => {
 
     <style>
       body {
-        font-family: Inter;
+        font-family: Inter, sans-serif;
       }
     </style>
   `;

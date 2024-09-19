@@ -89,7 +89,7 @@ const handleMouseOver = (e: MouseEvent, d: DopingAllegation): void => {
       <br>
         ${d.Time} | ${d.Year.toString()}
       <br>
-      <span id='allegation'>
+      <span class='text-danger'>
         ${d.Doping}
       </span>
     `

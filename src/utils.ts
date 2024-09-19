@@ -25,10 +25,6 @@ const createVisual = (index: number, visual: string): string => `
   </div>
 
   <style>
-    #allegation {
-      color: ${(GLOBALS as { COLORS: RecordProps }).COLORS.darkRed};
-    }
-
     @media (max-width: 48rem) {
       .visual {
         transform: scale(0.8);
@@ -77,13 +73,13 @@ const createTooltip = ({
 }: TooltipProps): void => {
   const remSize = 16;
   width = width * remSize;
-  controlTooltip({ e, posX, posY, width, fillColor });
 
   let tooltip = select<HTMLDivElement, unknown>('#tooltip');
   if (tooltip.empty()) {
     tooltip = select('body')
       .append('div')
       .attr('id', 'tooltip')
+      .classed('pe-none', true)
       .style('position', 'absolute')
       .style(
         'background-color',
@@ -100,6 +96,8 @@ const createTooltip = ({
       .style('padding', '10px')
       .style('display', 'none');
   }
+
+  controlTooltip({ e, posX, posY, width, fillColor });
 };
 
 const handleMouseOut = (event: MouseEvent, fillColor: string): void => {
