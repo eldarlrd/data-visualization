@@ -1,7 +1,7 @@
 {
   "name": "data-visualization",
   "private": true,
-  "version": "0.3.2",
+  "version": "0.3.3",
   "type": "module",
   "keywords": [
     "data visualization"
@@ -29,6 +29,7 @@
     "experimentalTernaries": true
   },
   "dependencies": {
+    "@fontsource/inter": "^5.1.0",
     "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.3",
     "d3": "^7.9.0"

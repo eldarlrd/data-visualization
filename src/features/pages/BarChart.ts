@@ -1,7 +1,7 @@
 import { axisBottom, axisLeft, max, scaleBand, scaleLinear, select } from 'd3';
 
-import { getData } from '@/api.ts';
 import GLOBALS from '@/content/globals.yaml';
+import { useApi } from '@/useApi.ts';
 import {
   createVisual,
   createTooltip,
@@ -20,7 +20,7 @@ const QUARTERS: RecordProps = {
   '10': 'Q4'
 };
 
-const handleMouseOver = (event: MouseEvent, d: [string, number]): void => {
+const handleMouseOver = (e: MouseEvent, d: [string, number]): void => {
   const topDistance = 240;
   const mediumTopDistance = 180;
   const smallTopDistance = 100;
@@ -28,41 +28,29 @@ const handleMouseOver = (event: MouseEvent, d: [string, number]): void => {
   const mediumScreenSize = 768;
   const smallScreenSize = 576;
 
-  const remSize = 16;
-  const windowPadding = 10;
-  const tooltipWidth = remSize * 7;
-  createTooltip(tooltipWidth);
-
-  select(event.target as SVGElement).style(
-    'fill',
-    (GLOBALS as { COLORS: RecordProps }).COLORS.lightGreen
-  );
-
   const [year, quarter] = d[0].split('-');
   const quarterText = QUARTERS[quarter];
 
-  const mouseX = event.clientX;
-
-  const barWidth = +select(event.target as SVGElement).attr('width');
-  const windowWidth = window.innerWidth;
   const svgBounds = (
     select('#chart').node() as SVGElement
   ).getBoundingClientRect();
 
-  let tooltipTop = svgBounds.top + topDistance;
-  let tooltipLeft = mouseX + barWidth + windowPadding;
+  const width = 7.5;
+  const fillColor = 'lightGreen';
+  const elementWidth = +select(e.target as SVGElement).attr('width');
 
-  if (tooltipLeft + tooltipWidth > windowWidth)
-    tooltipLeft = windowWidth - tooltipWidth - windowPadding;
+  const posX = e.clientX + elementWidth;
+  let posY = svgBounds.top + topDistance;
 
   if (window.innerWidth < mediumScreenSize)
-    tooltipTop = svgBounds.top + mediumTopDistance;
+    posY = svgBounds.top + mediumTopDistance;
 
   if (window.innerWidth < smallScreenSize)
-    tooltipTop = svgBounds.top + smallTopDistance;
+    posY = svgBounds.top + smallTopDistance;
+
+  createTooltip({ e, posX, posY, width, fillColor });
 
   select('#tooltip')
-    .style('display', 'block')
     .html(
       `
       <strong>
@@ -72,9 +60,7 @@ const handleMouseOver = (event: MouseEvent, d: [string, number]): void => {
       $${d[1].toLocaleString()} B
     `
     )
-    .attr('data-date', d[0])
-    .style('top', `${tooltipTop.toString()}px`)
-    .style('left', `${tooltipLeft.toString()}px`);
+    .attr('data-date', d[0]);
 };
 
 const renderChart = (gdpData: [string, number][]): void => {
@@ -154,7 +140,7 @@ const renderChart = (gdpData: [string, number][]): void => {
 };
 
 export const BarChart = (): string => {
-  getData('gdp')
+  useApi('gdp')
     .then(data => {
       renderChart((data as GDPShape).data);
       return;

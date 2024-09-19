@@ -1,4 +1,4 @@
-import { getData } from '@/api.ts';
+import { useApi } from '@/useApi.ts';
 import { createVisual } from '@/utils.ts';
 
 interface VarianceProps {
@@ -17,7 +17,7 @@ const renderMap = (data: TemperatureProps): void => {
 };
 
 export const HeatMap = (): string => {
-  getData('temperature')
+  useApi('temperature')
     .then(data => {
       renderMap(data as TemperatureProps);
       return;

@@ -1,5 +1,6 @@
 import { Back } from '@/components/Back.ts';
 import { Grid } from '@/features/Grid.ts';
+import { NoPage } from '@/features/NoPage.ts';
 
 type PageLoader = () => Promise<string>;
 type PageMap = Record<string, PageLoader>;
@@ -18,7 +19,7 @@ const PAGE_LIST: PageMap = {
     (await import('@/features/pages/TreemapDiagram.ts')).TreemapDiagram()
 };
 
-const fallbackLoader: PageLoader = async () => Promise.resolve(Back());
+const fallbackLoader: PageLoader = async () => Promise.resolve(NoPage());
 
 export const App = async (): Promise<string> => {
   const currPath = location.pathname.split('/')[2];
@@ -31,7 +32,13 @@ export const App = async (): Promise<string> => {
       <div class='container row justify-content-center align-items-center column-gap-3'>
         ${pageContent}
       </div>
-      ${currPath && currPath in PAGE_LIST ? Back() : ''}
+      ${currPath !== '' ? Back() : ''}
     </main>
+
+    <style>
+      body {
+        font-family: Inter;
+      }
+    </style>
   `;
 };

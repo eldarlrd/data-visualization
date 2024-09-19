@@ -8,8 +8,8 @@ import {
   select
 } from 'd3';
 
-import { getData } from '@/api.ts';
 import GLOBALS from '@/content/globals.yaml';
+import { useApi } from '@/useApi.ts';
 import {
   createVisual,
   createTooltip,
@@ -71,34 +71,17 @@ const formatTime = (time: unknown): string => {
   return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 };
 
-const handleMouseOver = (event: MouseEvent, d: DopingAllegation): void => {
-  const remSize = 16;
-  const windowPadding = 10;
-  const tooltipWidth = remSize * 12;
-  createTooltip(tooltipWidth);
+const handleMouseOver = (e: MouseEvent, d: DopingAllegation): void => {
+  const width = 12.5;
+  const fillColor = d.Doping ? 'red' : 'blue';
+  const elementWidth = +select(e.target as SVGElement).attr('width');
 
-  select(event.target as SVGElement).style('fill', d =>
-    (d as DopingAllegation).Doping ?
-      (GLOBALS as { COLORS: RecordProps }).COLORS.red
-    : (GLOBALS as { COLORS: RecordProps }).COLORS.blue
-  );
+  const posY = e.clientY + elementWidth;
 
-  const mouseX = event.clientX;
-  const mouseY = event.clientY;
+  createTooltip({ e, posY, width, fillColor });
 
-  const circleWidth = +select(event.target as SVGElement).attr('width');
-  const windowWidth = window.innerWidth;
-
-  const tooltipTop = mouseY + circleWidth + windowPadding;
-  let tooltipLeft = mouseX + windowPadding;
-
-  if (tooltipLeft + tooltipWidth > windowWidth)
-    tooltipLeft = windowWidth - tooltipWidth - windowPadding;
-
-  select('#tooltip')
-    .style('display', 'block')
-    .html(
-      `
+  select('#tooltip').html(
+    `
       ${(GLOBALS as { FLAGS: RecordProps }).FLAGS[d.Nationality]}
       <strong>
         ${d.Name}
@@ -110,9 +93,7 @@ const handleMouseOver = (event: MouseEvent, d: DopingAllegation): void => {
         ${d.Doping}
       </span>
     `
-    )
-    .style('top', `${tooltipTop.toString()}px`)
-    .style('left', `${tooltipLeft.toString()}px`);
+  );
 };
 
 const renderGraph = (dopingData: DopingAllegation[]): void => {
@@ -177,7 +158,7 @@ const renderGraph = (dopingData: DopingAllegation[]): void => {
 };
 
 export const ScatterplotGraph = (): string => {
-  getData('doping')
+  useApi('doping')
     .then(data => {
       renderGraph(data as DopingAllegation[]);
       return;

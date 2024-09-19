@@ -8,7 +8,7 @@ const SOURCES: RecordProps = {
     'https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/global-temperature.json'
 };
 
-export const getData = async <T>(source: string): Promise<T> => {
+export const useApi = async <T>(source: string): Promise<T> => {
   try {
     const response = await fetch(SOURCES[source], { mode: 'cors' });
     const data = (await response.json()) as T;

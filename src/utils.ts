@@ -3,6 +3,14 @@ import { select } from 'd3';
 import GLOBALS from '@/content/globals.yaml';
 import PAGES from '@/content/pages.yaml';
 
+interface TooltipProps {
+  e: MouseEvent;
+  posX?: number;
+  posY: number;
+  width: number;
+  fillColor: string;
+}
+
 interface PageProps {
   title: string;
   text: string;
@@ -35,7 +43,42 @@ const createVisual = (index: number, visual: string): string => `
   </style>
 `;
 
-const createTooltip = (width: number): void => {
+const controlTooltip = ({
+  e,
+  posX = e.clientX,
+  posY,
+  width,
+  fillColor
+}: TooltipProps): void => {
+  const windowWidth = window.innerWidth;
+  const windowPadding = 10;
+  posX += windowPadding;
+  posY += windowPadding;
+
+  if (posX + width > windowWidth) posX = windowWidth - width - windowPadding;
+
+  select(e.target as SVGElement).style(
+    'fill',
+    (GLOBALS as { COLORS: RecordProps }).COLORS[fillColor]
+  );
+
+  select('#tooltip')
+    .style('display', 'block')
+    .style('top', `${posY.toString()}px`)
+    .style('left', `${posX.toString()}px`);
+};
+
+const createTooltip = ({
+  e,
+  posX,
+  posY,
+  width,
+  fillColor
+}: TooltipProps): void => {
+  const remSize = 16;
+  width = width * remSize;
+  controlTooltip({ e, posX, posY, width, fillColor });
+
   let tooltip = select<HTMLDivElement, unknown>('#tooltip');
   if (tooltip.empty()) {
     tooltip = select('body')
