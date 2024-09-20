@@ -108,7 +108,7 @@ const handleMouseOut = (event: MouseEvent, fillColor: string): void => {
   select('#tooltip').style('display', 'none');
 };
 
-const handleClick = (_: MouseEvent, d: { URL: string }): void => {
+const handleClick = (_: MouseEvent, d: { URL: string | null }): void => {
   if (d.URL && matchMedia('(pointer:fine)').matches)
     window.open(d.URL, '_blank', 'noreferrer');
 };

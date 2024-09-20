@@ -9,7 +9,7 @@ import {
 } from 'd3';
 
 import GLOBALS from '@/content/globals.yaml';
-import { useApi } from '@/useApi.ts';
+import { type SchemaProps, useApi } from '@/useApi.ts';
 import {
   createVisual,
   createTooltip,
@@ -18,16 +18,7 @@ import {
   type RecordProps
 } from '@/utils.ts';
 
-interface DopingAllegation {
-  Time: string;
-  Place: number;
-  Seconds: string;
-  Name: string;
-  Year: number;
-  Nationality: string;
-  Doping: string;
-  URL: string;
-}
+type DopingAllegation = SchemaProps['doping'];
 
 const legendData = [
   {
@@ -71,7 +62,7 @@ const formatTime = (time: unknown): string => {
   return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 };
 
-const handleMouseOver = (e: MouseEvent, d: DopingAllegation): void => {
+const handleMouseOver = (e: MouseEvent, d: DopingAllegation[number]): void => {
   const width = 12.5;
   const fillColor = d.Doping ? 'red' : 'blue';
   const elementWidth = +select(e.target as SVGElement).attr('width');
@@ -90,13 +81,13 @@ const handleMouseOver = (e: MouseEvent, d: DopingAllegation): void => {
         ${d.Time} | ${d.Year.toString()}
       <br>
       <span class='text-danger'>
-        ${d.Doping}
+        ${d.Doping ?? ''}
       </span>
     `
   );
 };
 
-const renderGraph = (dopingData: DopingAllegation[]): void => {
+const renderGraph = (dopingData: DopingAllegation): void => {
   const svg = select('#graph')
     .append('g')
     .attr('transform', 'translate(40, 20)');
@@ -158,9 +149,9 @@ const renderGraph = (dopingData: DopingAllegation[]): void => {
 };
 
 export const ScatterplotGraph = (): string => {
-  useApi('doping')
+  useApi<DopingAllegation>('doping')
     .then(data => {
-      renderGraph(data as DopingAllegation[]);
+      renderGraph(data);
       return;
     })
     .catch((error: unknown) => {

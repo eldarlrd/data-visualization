@@ -1,7 +1,7 @@
 import { axisBottom, axisLeft, max, scaleBand, scaleLinear, select } from 'd3';
 
 import GLOBALS from '@/content/globals.yaml';
-import { useApi } from '@/useApi.ts';
+import { type SchemaProps, useApi } from '@/useApi.ts';
 import {
   createVisual,
   createTooltip,
@@ -9,9 +9,7 @@ import {
   type RecordProps
 } from '@/utils.ts';
 
-interface GDPShape {
-  data: [string, number][];
-}
+type GDPShape = SchemaProps['gdp'];
 
 const QUARTERS: RecordProps = {
   '01': 'Q1',
@@ -20,7 +18,7 @@ const QUARTERS: RecordProps = {
   '10': 'Q4'
 };
 
-const handleMouseOver = (e: MouseEvent, d: [string, number]): void => {
+const handleMouseOver = (e: MouseEvent, d: GDPShape['data'][number]): void => {
   const topDistance = 240;
   const mediumTopDistance = 180;
   const smallTopDistance = 100;
@@ -63,7 +61,7 @@ const handleMouseOver = (e: MouseEvent, d: [string, number]): void => {
     .attr('data-date', d[0]);
 };
 
-const renderChart = (gdpData: [string, number][]): void => {
+const renderChart = (gdpData: GDPShape['data']): void => {
   const svg = select('#chart')
     .append('g')
     .attr('transform', 'translate(40, 20)');
@@ -140,9 +138,9 @@ const renderChart = (gdpData: [string, number][]): void => {
 };
 
 export const BarChart = (): string => {
-  useApi('gdp')
+  useApi<GDPShape>('gdp')
     .then(data => {
-      renderChart((data as GDPShape).data);
+      renderChart(data.data);
       return;
     })
     .catch((error: unknown) => {

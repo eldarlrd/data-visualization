@@ -4,6 +4,7 @@
 
 > Data Visualization Compendium uses
 > - **[D3](https://d3js.org)**
+> - **[Zod](https://zod.dev)**
 > - **[TypeScript](https://typescriptlang.org)**
 > - **[Font Awesome](https://fontawesome.com)**
 > - **[Bootstrap](https://getbootstrap.com)**

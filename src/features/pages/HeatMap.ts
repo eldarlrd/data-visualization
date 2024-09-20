@@ -1,25 +1,16 @@
-import { useApi } from '@/useApi.ts';
+import { type SchemaProps, useApi } from '@/useApi.ts';
 import { createVisual } from '@/utils.ts';
 
-interface VarianceProps {
-  year: number;
-  month: number;
-  variance: number;
-}
-
-interface TemperatureProps {
-  baseTemperature: number;
-  monthlyVariance: VarianceProps[];
-}
+type TemperatureProps = SchemaProps['temperature'];
 
 const renderMap = (data: TemperatureProps): void => {
   console.log(data);
 };
 
 export const HeatMap = (): string => {
-  useApi('temperature')
+  useApi<TemperatureProps>('temperature')
     .then(data => {
-      renderMap(data as TemperatureProps);
+      renderMap(data);
       return;
     })
     .catch((error: unknown) => {
