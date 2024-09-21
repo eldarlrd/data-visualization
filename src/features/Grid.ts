@@ -1,5 +1,5 @@
 import PAGES from '@/content/pages.yaml';
-import { type PageProps, titleToLink } from '@/utils.ts';
+import { titleToLink, type PageProps } from '@/utils/tools.ts';
 
 export const Grid = (): string =>
   (PAGES as PageProps[])

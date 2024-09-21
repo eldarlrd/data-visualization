@@ -7,16 +7,15 @@ type PageMap = Record<string, PageLoader>;
 
 const PAGE_LIST: PageMap = {
   '': async () => Promise.resolve(Grid()),
-  'us-gdp': async () =>
-    (await import('@/features/pages/BarChart.ts')).BarChart(),
+  'us-gdp': async () => (await import('@/pages/BarChart.ts')).BarChart(),
   'cycling-doping': async () =>
-    (await import('@/features/pages/ScatterplotGraph.ts')).ScatterplotGraph(),
+    (await import('@/pages/ScatterplotGraph.ts')).ScatterplotGraph(),
   'global-temperature': async () =>
-    (await import('@/features/pages/HeatMap.ts')).HeatMap(),
+    (await import('@/pages/HeatMap.ts')).HeatMap(),
   'us-education': async () =>
-    (await import('@/features/pages/ChoroplethMap.ts')).ChoroplethMap(),
+    (await import('@/pages/ChoroplethMap.ts')).ChoroplethMap(),
   'movie-sales': async () =>
-    (await import('@/features/pages/TreemapDiagram.ts')).TreemapDiagram()
+    (await import('@/pages/TreemapDiagram.ts')).TreemapDiagram()
 };
 
 const fallbackLoader: PageLoader = async () => Promise.resolve(NoPage());

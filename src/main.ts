@@ -22,8 +22,8 @@ import '@fontsource/inter';
 import 'bootstrap/scss/bootstrap.scss';
 
 import { App } from '@/App.ts';
-import { Footer } from '@/components/banners/Footer.ts';
-import { Header } from '@/components/banners/Header.ts';
+import { Footer } from '@/features/banners/Footer.ts';
+import { Header } from '@/features/banners/Header.ts';
 
 const root = document.getElementById('root');
 

@@ -1,5 +1,6 @@
-import { type SchemaProps, useApi } from '@/useApi.ts';
-import { createVisual } from '@/utils.ts';
+import { type SchemaProps } from '@/utils/schemas.ts';
+import { createVisual } from '@/utils/tools.ts';
+import { useApi } from '@/utils/useApi.ts';
 
 type TemperatureProps = SchemaProps['temperature'];
 

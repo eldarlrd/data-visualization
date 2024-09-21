@@ -1,5 +1,6 @@
 // @ts-nocheck
 import js from '@eslint/js';
+import vitest from '@vitest/eslint-plugin';
 import eslintConfigPrettier from 'eslint-config-prettier';
 import { flatConfigs } from 'eslint-plugin-import';
 import nodePlugin from 'eslint-plugin-n';
@@ -35,9 +36,7 @@ export default tseslint.config({
       projectService: true
     }
   },
-  plugins: {
-    'no-relative-import-paths': noRelativeImportPaths
-  },
+  plugins: { 'no-relative-import-paths': noRelativeImportPaths, vitest },
   rules: {
     '@typescript-eslint/no-unused-vars': 2,
     '@typescript-eslint/explicit-member-accessibility': 2,
@@ -53,6 +52,13 @@ export default tseslint.config({
     'import/no-default-export': 2,
     'import/group-exports': 2,
     'jest/no-deprecated-functions': 0,
+    "vitest/no-test-return-statement": 2,
+    "vitest/consistent-test-filename": 2,
+    "vitest/prefer-equality-matcher": 2,
+    "vitest/prefer-lowercase-title": 2,
+    "vitest/prefer-strict-equal": 2,
+    "vitest/consistent-test-it": 2,
+    "vitest/no-test-prefixes": 2,
     'n/no-missing-import': 0,
     'no-unused-vars': 0,
     'prefer-const': 2,

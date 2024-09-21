@@ -8,6 +8,7 @@
 > - **[TypeScript](https://typescriptlang.org)**
 > - **[Font Awesome](https://fontawesome.com)**
 > - **[Bootstrap](https://getbootstrap.com)**
+> - **[Vitest](https://vitest.dev)**
 > - **[Vite](https://vitejs.dev)**
 >
 > for displaying the charts, maps, and graphs.
@@ -32,6 +33,15 @@ pnpm preview
 ### Format Code (ESLint + Prettier)
 ```sh
 pnpm format
+```
+## Test
+### Run Watch
+```sh
+pnpm test
+```
+### Coverage Report
+```sh
+pnpm cover
 ```
 ## Deploy
 ```sh

@@ -7,7 +7,12 @@
     "skipLibCheck": true,
     "composite": true,
     // Bundler
-    "types": ["vite/client", "@modyfi/vite-plugin-yaml/modules"],
+    "types": [
+      "vite/client",
+      "vitest",
+      "vitest/globals",
+      "@modyfi/vite-plugin-yaml/modules"
+    ],
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "allowSyntheticDefaultImports": true,
@@ -21,5 +26,5 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "*.config.mts"]
+  "include": ["src", "*.config.mts", "__tests__"]
 }

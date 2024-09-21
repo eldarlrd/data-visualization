@@ -9,14 +9,15 @@ import {
 } from 'd3';
 
 import GLOBALS from '@/content/globals.yaml';
-import { type SchemaProps, useApi } from '@/useApi.ts';
+import { type SchemaProps } from '@/utils/schemas.ts';
 import {
   createVisual,
   createTooltip,
   handleMouseOut,
   handleClick,
   type RecordProps
-} from '@/utils.ts';
+} from '@/utils/tools.ts';
+import { useApi } from '@/utils/useApi.ts';
 
 type DopingAllegation = SchemaProps['doping'];
 

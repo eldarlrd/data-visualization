@@ -1,5 +1,6 @@
 import { select } from 'd3';
 
+import { Spinner } from '@/components/Spinner.ts';
 import GLOBALS from '@/content/globals.yaml';
 import PAGES from '@/content/pages.yaml';
 
@@ -18,10 +19,22 @@ interface PageProps {
 
 type RecordProps = Record<string, string>;
 
+const loadContent = (): void => {
+  select('#spinner-slot').classed('d-none', true);
+  select('.visual').style('display', 'block');
+};
+
 const createVisual = (index: number, visual: string): string => `
   <div class='d-flex flex-column justify-content-center align-items-center gap-4 user-select-none'>
-    <h3>${(PAGES[index] as PageProps).title.toString()}</h3>
-    <svg id=${visual} class='visual' width='42rem' height='25rem'></svg>
+    <h3>
+      ${(PAGES[index] as PageProps).title.toString()}
+    </h3>
+
+    <div id='spinner-slot'>
+      ${Spinner()}
+    </div>
+
+    <svg id=${visual} class='visual' width='42rem' height='25rem' style='display:none'></svg>
   </div>
 
   <style>
@@ -51,6 +64,7 @@ const controlTooltip = ({
   posX += windowPadding;
   posY += windowPadding;
 
+  // Prevent window overflow
   if (posX + width > windowWidth) posX = windowWidth - width - windowPadding;
 
   select(e.target as SVGElement).style(
@@ -80,7 +94,8 @@ const createTooltip = ({
       .append('div')
       .attr('id', 'tooltip')
       .classed('pe-none', true)
-      .style('position', 'absolute')
+      .classed('user-select-none', true)
+      .classed('position-absolute', true)
       .style(
         'background-color',
         (GLOBALS as { COLORS: RecordProps }).COLORS.white
@@ -91,7 +106,6 @@ const createTooltip = ({
       )
       .style('width', width.toString() + 'px')
       .style('border-radius', '.375rem')
-      .style('user-select', 'none')
       .style('opacity', '0.975')
       .style('padding', '10px')
       .style('display', 'none');
@@ -109,6 +123,7 @@ const handleMouseOut = (event: MouseEvent, fillColor: string): void => {
 };
 
 const handleClick = (_: MouseEvent, d: { URL: string | null }): void => {
+  // Disable links on a touchscreen
   if (d.URL && matchMedia('(pointer:fine)').matches)
     window.open(d.URL, '_blank', 'noreferrer');
 };
@@ -117,6 +132,7 @@ const titleToLink = (title: string): string =>
   title.split(' ').slice(1).join('-').toLowerCase();
 
 export {
+  loadContent,
   createVisual,
   createTooltip,
   handleMouseOut,
