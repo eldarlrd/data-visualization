@@ -5,7 +5,7 @@ import ViteYaml from '@modyfi/vite-plugin-yaml';
 export default defineConfig({
   base: '/data-visualization/',
   plugins: [ViteYaml()],
-  resolve: { alias: { '@': '/src' } },
+  resolve: { alias: { '@': '/src', '!': '/__mocks__' } },
   // https://vitest.dev/config
   test: {
     globals: true,

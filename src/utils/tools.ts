@@ -34,7 +34,7 @@ const createVisual = (index: number, visual: string): string => `
       ${Spinner()}
     </div>
 
-    <svg id=${visual} class='visual' width='42rem' height='25rem' style='display:none'></svg>
+    <svg id='${visual}' class='visual' width='42rem' height='25rem' style='display:none'></svg>
   </div>
 
   <style>

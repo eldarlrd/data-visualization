@@ -19,7 +19,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "paths": { "@/*": ["./src/*"] },
+    "paths": { "@/*": ["./src/*"], "!/*": ["./__mocks__/*"] },
     // Linting
     "strict": true,
     "noUnusedLocals": true,

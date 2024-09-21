@@ -123,7 +123,7 @@ const renderGraph = (dopingData: DopingAllegation): void => {
   const xAxis = axisBottom(xScale);
   const yAxis = axisLeft(yScale).tickValues(tickValues).tickFormat(formatTime);
 
-  svg.append('g').attr('transform', `translate(0, 350)`).call(xAxis);
+  svg.append('g').attr('transform', 'translate(0, 350)').call(xAxis);
   svg.append('g').call(yAxis);
 
   svg

@@ -1,0 +1,15 @@
+{
+  "baseTemperature": 8.66,
+  "monthlyVariance": [
+    {
+      "year": 1753,
+      "month": 1,
+      "variance": -1.366
+    },
+    {
+      "year": 1753,
+      "month": 2,
+      "variance": -2.223
+    }
+  ]
+}

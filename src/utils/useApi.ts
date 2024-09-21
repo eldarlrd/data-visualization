@@ -11,9 +11,9 @@ const SOURCES: RecordProps = {
     'https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/global-temperature.json'
 };
 
-export const useApi = async <T>(source: keyof typeof SCHEMAS): Promise<T> => {
+const useApi = async <T>(source: keyof typeof SCHEMAS): Promise<T> => {
   try {
-    const response = await fetch(SOURCES[source], { mode: 'cors' });
+    const response = await fetch(SOURCES[source]);
     const data = (await response.json()) as T;
 
     const parsedData = SCHEMAS[source].parse(data) as T;
@@ -26,3 +26,5 @@ export const useApi = async <T>(source: keyof typeof SCHEMAS): Promise<T> => {
     throw error;
   }
 };
+
+export { SOURCES, useApi };
