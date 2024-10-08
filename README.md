@@ -9,7 +9,7 @@
 > - **[Font Awesome](https://fontawesome.com)**
 > - **[Bootstrap](https://getbootstrap.com)**
 > - **[Vitest](https://vitest.dev)**
-> - **[Vite](https://vitejs.dev)**
+> - **[Vite](https://vite.dev)**
 >
 > for displaying the charts, maps, and graphs.
 
