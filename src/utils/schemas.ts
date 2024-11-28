@@ -1,11 +1,5 @@
 import { object, tuple, string, number, type z, type ZodSchema } from 'zod';
 
-interface SchemaProps {
-  gdp: z.infer<typeof gdpSchema>;
-  doping: z.infer<typeof dopingSchema>;
-  temperature: z.infer<typeof temperatureSchema>;
-}
-
 const gdpSchema = object({
   data: tuple([string(), number()]).array()
 });
@@ -30,10 +24,16 @@ const temperatureSchema = object({
   }).array()
 });
 
+interface SchemaProps {
+  gdp: z.infer<typeof gdpSchema>;
+  doping: z.infer<typeof dopingSchema>;
+  temperature: z.infer<typeof temperatureSchema>;
+}
+
 const SCHEMAS: Record<string, ZodSchema> = {
   gdp: gdpSchema,
   doping: dopingSchema,
   temperature: temperatureSchema
 };
 
-export { SCHEMAS, type SchemaProps };
+export { type SchemaProps, SCHEMAS };

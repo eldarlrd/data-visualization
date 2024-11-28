@@ -35,6 +35,15 @@ export const App = async (): Promise<string> => {
     </main>
 
     <style>
+      :root {
+        scrollbar-width: thin;
+      }
+
+      ::selection {
+        color: white;
+        background: #0d6efd;
+      }
+
       body {
         font-family: Inter, sans-serif;
       }

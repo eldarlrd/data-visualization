@@ -85,8 +85,12 @@ describe('tools', () => {
     const mockEvent = {} as MouseEvent;
 
     handleClick(mockEvent, mockData);
-    
-    expect(mockOpen).toHaveBeenCalledWith('https://example.com', '_blank', 'noreferrer');
+
+    expect(mockOpen).toHaveBeenCalledWith(
+      'https://example.com',
+      '_blank',
+      'noreferrer'
+    );
     mockOpen.mockRestore();
   });
 
