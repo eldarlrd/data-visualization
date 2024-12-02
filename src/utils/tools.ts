@@ -114,10 +114,14 @@ const createTooltip = ({
   controlTooltip({ e, posX, posY, width, fillColor });
 };
 
-const handleMouseOut = (event: MouseEvent, fillColor: string): void => {
+const handleMouseOut = (
+  event: MouseEvent,
+  fillColor: string,
+  custom = false
+): void => {
   select(event.target as SVGElement).style(
     'fill',
-    (GLOBALS as { COLORS: RecordProps }).COLORS[fillColor]
+    custom ? fillColor : (GLOBALS as { COLORS: RecordProps }).COLORS[fillColor]
   );
   select('#tooltip').style('display', 'none');
 };

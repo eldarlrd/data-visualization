@@ -52,12 +52,12 @@ const handleMouseOver = (e: MouseEvent, d: GDPShape['data'][number]): void => {
   select('#tooltip')
     .html(
       `
-      <strong>
-        ${year} ${quarterText}
-      </strong>
-      <br>
-      $${d[1].toLocaleString()} B
-    `
+        <strong>
+          ${year} ${quarterText}
+        </strong>
+        <br>
+        $${d[1].toLocaleString()} B
+      `
     )
     .attr('data-date', d[0]);
 };
