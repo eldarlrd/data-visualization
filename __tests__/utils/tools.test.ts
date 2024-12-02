@@ -70,6 +70,7 @@ describe('tools', () => {
       target: document.createElement('div')
     } as unknown as MouseEvent;
 
+    handleMouseOut(mockEvent, '#777', true);
     handleMouseOut(mockEvent, 'green');
 
     const tooltip = select('#tooltip');
