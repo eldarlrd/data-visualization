@@ -8,7 +8,11 @@ const SOURCES: RecordProps = {
   doping:
     'https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/cyclist-data.json',
   temperature:
-    'https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/global-temperature.json'
+    'https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/global-temperature.json',
+  topology:
+    'https://cdn.freecodecamp.org/testable-projects-fcc/data/choropleth_map/counties.json',
+  education:
+    'https://cdn.freecodecamp.org/testable-projects-fcc/data/choropleth_map/for_user_education.json'
 };
 
 const useApi = async <T>(source: keyof typeof SCHEMAS): Promise<T> => {

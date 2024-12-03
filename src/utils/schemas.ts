@@ -1,10 +1,19 @@
-import { object, tuple, string, number, type z, type ZodSchema } from 'zod';
+import {
+  object,
+  tuple,
+  union,
+  string,
+  number,
+  type z,
+  type ZodSchema,
+  literal
+} from 'zod';
 
-const gdpSchema = object({
+const gdp = object({
   data: tuple([string(), number()]).array()
 });
 
-const dopingSchema = object({
+const doping = object({
   Time: string(),
   Place: number(),
   Seconds: number(),
@@ -15,7 +24,7 @@ const dopingSchema = object({
   URL: string().nullable()
 }).array();
 
-const temperatureSchema = object({
+const temperature = object({
   baseTemperature: number(),
   monthlyVariance: object({
     year: number(),
@@ -24,16 +33,59 @@ const temperatureSchema = object({
   }).array()
 });
 
+const topology = object({
+  type: literal('Topology'),
+  objects: object({
+    counties: object({
+      type: literal('GeometryCollection'),
+      geometries: object({
+        type: union([literal('Polygon'), literal('MultiPolygon')]),
+        arcs: union([number(), number().array()]).array().array(),
+        id: number()
+      }).array()
+    }),
+    states: object({
+      type: literal('GeometryCollection'),
+      geometries: object({
+        type: literal('MultiPolygon'),
+        arcs: number().array().array().array(),
+        id: string()
+      }).array()
+    }),
+    nation: object({
+      type: literal('GeometryCollection'),
+      arcs: number().array().array().optional()
+    })
+  }),
+  arcs: tuple([number(), number()]).array().array(),
+  bbox: number().array().length(4),
+  transform: object({
+    scale: tuple([number(), number()]),
+    translate: tuple([number(), number()])
+  })
+});
+
+const education = object({
+  fips: number(),
+  state: string(),
+  area_name: string(),
+  bachelorsOrHigher: number()
+}).array();
+
 interface SchemaProps {
-  gdp: z.infer<typeof gdpSchema>;
-  doping: z.infer<typeof dopingSchema>;
-  temperature: z.infer<typeof temperatureSchema>;
+  gdp: z.infer<typeof gdp>;
+  doping: z.infer<typeof doping>;
+  temperature: z.infer<typeof temperature>;
+  topology: z.infer<typeof topology>;
+  education: z.infer<typeof education>;
 }
 
 const SCHEMAS: Record<string, ZodSchema> = {
-  gdp: gdpSchema,
-  doping: dopingSchema,
-  temperature: temperatureSchema
+  gdp,
+  doping,
+  temperature,
+  topology,
+  education
 };
 
 export { type SchemaProps, SCHEMAS };
