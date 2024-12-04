@@ -4,9 +4,9 @@ import {
   union,
   string,
   number,
+  literal,
   type z,
-  type ZodSchema,
-  literal
+  type ZodSchema
 } from 'zod';
 
 const gdp = object({

@@ -27,6 +27,21 @@ const MONTHS = [
   'DEC'
 ];
 
+const MONTHS_FULL = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December'
+];
+
 type TemperatureProps = SchemaProps['temperature'];
 
 const handleMouseOver = (
@@ -35,7 +50,7 @@ const handleMouseOver = (
   baseTemperature: number
 ): void => {
   const width = 10.5;
-  const fillColor = 'gray';
+  const fillColor = 'black';
   const posY = e.clientY;
 
   const varianceFormatted =
@@ -51,7 +66,7 @@ const handleMouseOver = (
   select('#tooltip').html(
     `
       <strong>
-        ${d.year.toString()} ${MONTHS[d.month - 1]} 
+        ${d.year.toString()} ${MONTHS_FULL[d.month - 1]} 
       </strong>
       <br>
       ${(baseTemperature + d.variance).toFixed(2)} °C | ${varianceFormatted} °C
