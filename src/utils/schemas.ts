@@ -72,12 +72,15 @@ const education = object({
   bachelorsOrHigher: number()
 }).array();
 
+const movies = object({});
+
 interface SchemaProps {
   gdp: z.infer<typeof gdp>;
   doping: z.infer<typeof doping>;
   temperature: z.infer<typeof temperature>;
   topology: z.infer<typeof topology>;
   education: z.infer<typeof education>;
+  movies: z.infer<typeof movies>;
 }
 
 const SCHEMAS: Record<string, ZodSchema> = {
@@ -85,7 +88,8 @@ const SCHEMAS: Record<string, ZodSchema> = {
   doping,
   temperature,
   topology,
-  education
+  education,
+  movies
 };
 
 export { type SchemaProps, SCHEMAS };

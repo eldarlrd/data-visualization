@@ -12,7 +12,9 @@ const SOURCES: RecordProps = {
   topology:
     'https://cdn.freecodecamp.org/testable-projects-fcc/data/choropleth_map/counties.json',
   education:
-    'https://cdn.freecodecamp.org/testable-projects-fcc/data/choropleth_map/for_user_education.json'
+    'https://cdn.freecodecamp.org/testable-projects-fcc/data/choropleth_map/for_user_education.json',
+  movies:
+    'https://cdn.freecodecamp.org/testable-projects-fcc/data/tree_map/movie-data.json'
 };
 
 const useApi = async <T>(source: keyof typeof SCHEMAS): Promise<T> => {
