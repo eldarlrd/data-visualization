@@ -75,7 +75,7 @@ const handleMouseOver = (e: MouseEvent, d: DopingAllegation[number]): void => {
   select('#tooltip').html(
     `
       ${(GLOBALS as { FLAGS: RecordProps }).FLAGS[d.Nationality]}
-      <strong>
+      <strong class='fw-medium'>
         ${d.Name}
       </strong>
       <br>

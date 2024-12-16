@@ -65,7 +65,7 @@ const handleMouseOver = (
 
   select('#tooltip').html(
     `
-      <strong>
+      <strong class='fw-medium'>
         ${d.year.toString()} ${MONTHS_FULL[d.month - 1]} 
       </strong>
       <br>

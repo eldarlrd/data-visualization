@@ -1,7 +1,7 @@
 {
   "name": "data-visualization",
   "private": true,
-  "version": "0.5.1",
+  "version": "0.9.0",
   "type": "module",
   "keywords": [
     "data visualization"
@@ -31,26 +31,26 @@
     "experimentalTernaries": true
   },
   "dependencies": {
-    "@fontsource/inter": "^5.1.0",
+    "@fontsource-variable/inter-tight": "^5.1.0",
     "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.3",
     "d3": "^7.9.0",
     "topojson-client": "^3.1.0",
-    "zod": "^3.23.8"
+    "zod": "^3.24.1"
   },
   "devDependencies": {
-    "@eslint/js": "^9.16.0",
+    "@eslint/js": "^9.17.0",
     "@modyfi/vite-plugin-yaml": "^1.1.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@types/d3": "^7.4.3",
     "@types/topojson-client": "^3.1.5",
     "@vitest/coverage-v8": "^2.1.8",
-    "@vitest/eslint-plugin": "^1.1.14",
-    "eslint": "^9.16.0",
+    "@vitest/eslint-plugin": "^1.1.16",
+    "eslint": "^9.17.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-import-resolver-typescript": "^3.7.0",
     "eslint-plugin-import": "^2.31.0",
-    "eslint-plugin-n": "^17.14.0",
+    "eslint-plugin-n": "^17.15.0",
     "eslint-plugin-no-relative-import-paths": "^1.5.5",
     "eslint-plugin-promise": "^7.2.1",
     "gh-pages": "^6.2.0",
@@ -58,10 +58,10 @@
     "happy-dom": "^15.11.7",
     "jiti": "^2.4.1",
     "prettier": "^3.4.2",
-    "sass": "^1.82.0",
+    "sass": "^1.83.0",
     "typescript": "^5.7.2",
-    "typescript-eslint": "^8.17.0",
-    "vite": "^6.0.2",
+    "typescript-eslint": "^8.18.0",
+    "vite": "^6.0.3",
     "vitest": "^2.1.8"
   },
   "engines": {

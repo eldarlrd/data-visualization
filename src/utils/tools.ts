@@ -25,10 +25,14 @@ const loadContent = (): void => {
 };
 
 const createVisual = (index: number, visual: string): string => `
-  <div class='d-flex flex-column justify-content-center align-items-center gap-4 user-select-none'>
-    <h3>
+  <div id='container' class='d-flex flex-column justify-content-center align-items-center gap-4 user-select-none'>
+    <h3 class='fw-normal'>
       ${(PAGES[index] as PageProps).title.toString()}
     </h3>
+
+    <p class='text-center'>
+      ${(PAGES[index] as PageProps).text.toString()}
+    </p>
 
     <div id='spinner-slot'>
       ${Spinner()}
@@ -39,13 +43,13 @@ const createVisual = (index: number, visual: string): string => `
 
   <style>
     @media (max-width: 48rem) {
-      .visual {
+      .visual, #tooltip {
         transform: scale(0.8);
       }
     }
 
     @media (max-width: 36rem) {
-      .visual {
+      .visual, #tooltip {
         transform: scale(0.5);
       }
     }
@@ -60,12 +64,18 @@ const controlTooltip = ({
   fillColor
 }: TooltipProps): void => {
   const windowWidth = window.innerWidth;
+  const scaleFactor =
+    windowWidth < 36 * 16 ? -2
+    : windowWidth < 48 * 16 ? 0
+    : 1;
+
   const windowPadding = 10;
-  posX += windowPadding;
-  posY += windowPadding;
+  posX += windowPadding * scaleFactor;
+  posY += windowPadding * scaleFactor;
 
   // Prevent window overflow
-  if (posX + width > windowWidth) posX = windowWidth - width - windowPadding;
+  if (posX + width > windowWidth)
+    posX = windowWidth - width - windowPadding * scaleFactor;
 
   select(e.target as SVGElement).style(
     'fill',
@@ -96,10 +106,8 @@ const createTooltip = ({
       .classed('pe-none', true)
       .classed('user-select-none', true)
       .classed('position-absolute', true)
-      .style(
-        'background-color',
-        (GLOBALS as { COLORS: RecordProps }).COLORS.white
-      )
+      .style('color', (GLOBALS as { COLORS: RecordProps }).COLORS.white)
+      .style('background', (GLOBALS as { COLORS: RecordProps }).COLORS.black)
       .style(
         'border',
         `1px solid ${(GLOBALS as { COLORS: RecordProps }).COLORS.gray}`

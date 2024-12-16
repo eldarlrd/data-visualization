@@ -20,39 +20,19 @@ const QUARTERS: RecordProps = {
 };
 
 const handleMouseOver = (e: MouseEvent, d: GDPShape['data'][number]): void => {
-  const topDistance = 240;
-  const mediumTopDistance = 180;
-  const smallTopDistance = 100;
-
-  const mediumScreenSize = 768;
-  const smallScreenSize = 576;
+  const width = 7.5;
+  const fillColor = 'lightGreen';
+  const posY = e.clientY;
 
   const [year, quarter] = d[0].split('-');
   const quarterText = QUARTERS[quarter];
 
-  const svgBounds = (
-    select('#chart').node() as SVGElement
-  ).getBoundingClientRect();
-
-  const width = 7.5;
-  const fillColor = 'lightGreen';
-  const elementWidth = +select(e.target as SVGElement).attr('width');
-
-  const posX = e.clientX + elementWidth;
-  let posY = svgBounds.top + topDistance;
-
-  if (window.innerWidth < mediumScreenSize)
-    posY = svgBounds.top + mediumTopDistance;
-
-  if (window.innerWidth < smallScreenSize)
-    posY = svgBounds.top + smallTopDistance;
-
-  createTooltip({ e, posX, posY, width, fillColor });
+  createTooltip({ e, posY, width, fillColor });
 
   select('#tooltip')
     .html(
       `
-        <strong>
+        <strong class='fw-medium'>
           ${year} ${quarterText}
         </strong>
         <br>

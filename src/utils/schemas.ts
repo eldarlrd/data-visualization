@@ -72,7 +72,17 @@ const education = object({
   bachelorsOrHigher: number()
 }).array();
 
-const movies = object({});
+const movies = object({
+  name: literal('Movies'),
+  children: object({
+    name: string(),
+    children: object({
+      name: string(),
+      category: string(),
+      value: string()
+    }).array()
+  }).array()
+});
 
 interface SchemaProps {
   gdp: z.infer<typeof gdp>;

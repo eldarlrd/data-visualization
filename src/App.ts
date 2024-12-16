@@ -1,6 +1,8 @@
 import { Back } from '@/components/Back.ts';
+import GLOBALS from '@/content/globals.yaml';
 import { Grid } from '@/features/Grid.ts';
 import { NoPage } from '@/features/NoPage.ts';
+import { type RecordProps } from '@/utils/tools.ts';
 
 type PageLoader = () => Promise<string>;
 type PageMap = Record<string, PageLoader>;
@@ -40,12 +42,12 @@ export const App = async (): Promise<string> => {
       }
 
       ::selection {
-        color: white;
-        background: #0d6efd;
+        color: ${(GLOBALS as { COLORS: RecordProps }).COLORS.white};
+        background: ${(GLOBALS as { COLORS: RecordProps }).COLORS.blue};
       }
 
       body {
-        font-family: Inter, sans-serif;
+        font-family: 'Inter Tight Variable', sans-serif;
       }
     </style>
   `;

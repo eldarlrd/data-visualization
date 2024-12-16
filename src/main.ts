@@ -18,7 +18,7 @@
  * along with Data Visualization. If not, see <https://www.gnu.org/licenses/>.
  */
 
-import '@fontsource/inter';
+import '@fontsource-variable/inter-tight';
 import 'bootstrap/scss/bootstrap.scss';
 
 import { App } from '@/App.ts';

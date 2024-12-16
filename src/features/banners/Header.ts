@@ -1,6 +1,6 @@
 export const Header = (): string => `
   <header class='my-3'>
-    <h2 class='text-center user-select-none'>
+    <h2 class='text-center fw-normal user-select-none'>
       <img
         src='favicon.png'
         class='align-bottom'

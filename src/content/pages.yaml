@@ -1,24 +1,24 @@
 - title: 💰 US GDP
   text:
     Bar Chart of United States Gross Domestic Product by
-    the Federal Reserve Economic Data from 1947 to 2015.
+    the Federal Reserve Economic Data from 1947 to 2015
 
 - title: 💉 Cycling Doping
   text:
     A Scatterplot Graph of cases of doping allegations
-    in professional bicycle racing from 1993 to 2016.
+    in professional bicycle racing from 1993 to 2016
 
 - title: 🌡️ Global Temperature
   text:
     A Heat Map of the monthly land-surface temperature
-    of the world from 1753 to 2015.
+    of the world from 1753 to 2015
 
 - title: 🏫 US Education
   text:
-    A Choropleth Map for the educational attainment
-    of adults age 25+ between 2010 and 2014.
+    A Choropleth Map for the bachelor's degree
+    of adults age 25+ between 2010 and 2014
 
 - title: 🍿 Movie Sales
   text:
     Visualized Treemap Diagram for the top 100 highest
-    grossing movies grouped by genre until 2015.
+    grossing movies grouped by genre until 2015

@@ -1,8 +1,25 @@
-import { geoPath, max, min, scaleQuantize, schemeBlues, select } from 'd3';
+import {
+  axisBottom,
+  geoPath,
+  max,
+  min,
+  scaleLinear,
+  type ScaleQuantize,
+  scaleQuantize,
+  schemeBlues,
+  select,
+  type Selection
+} from 'd3';
 import { feature, mesh } from 'topojson-client';
 
+import GLOBALS from '@/content/globals.yaml';
 import { type SchemaProps } from '@/utils/schemas.ts';
-import { createTooltip, createVisual, handleMouseOut } from '@/utils/tools.ts';
+import {
+  createTooltip,
+  createVisual,
+  handleMouseOut,
+  type RecordProps
+} from '@/utils/tools.ts';
 import { useApi } from '@/utils/useApi.ts';
 
 type TopologyProps = SchemaProps['topology'];
@@ -66,7 +83,7 @@ const handleMouseOver = (
   d: GeoJSON.Feature,
   educationMap: Map<number, EducationProps[number]>
 ): void => {
-  const width = 13.5;
+  const width = 13;
   const fillColor = 'black';
   const posY = e.clientY;
 
@@ -85,7 +102,7 @@ const handleMouseOver = (
 
   select('#tooltip').html(
     `
-      <strong>
+      <strong class='fw-medium'>
         ${area_name.toString()}
         <br>
         ${US_STATES[state as keyof typeof US_STATES]}
@@ -93,6 +110,50 @@ const handleMouseOver = (
       – ${bachelorsOrHigher.toString()}%
     `
   );
+};
+
+const renderLegend = (
+  svg: Selection<SVGSVGElement, unknown, null, undefined>,
+  colorScale: ScaleQuantize<string>,
+  minRate: number,
+  maxRate: number
+): void => {
+  const legendWidth = 300;
+  const legendHeight = 15;
+  const legendX = '560';
+  const legendY = '30';
+
+  const legendGroup = svg
+    .append('g')
+    .attr('transform', `translate(${legendX},${legendY})`);
+
+  const legendScale = scaleLinear()
+    .domain([minRate, maxRate])
+    .range([0, legendWidth]);
+
+  const tickValues = [minRate, ...colorScale.thresholds(), maxRate];
+
+  legendGroup
+    .selectAll('rect')
+    .data(colorScale.range().map(d => colorScale.invertExtent(d)))
+    .enter()
+    .append('rect')
+    .attr('x', d => legendScale(d[0]))
+    .attr('y', 0)
+    .attr('width', d => legendScale(d[1]) - legendScale(d[0]))
+    .attr('height', legendHeight)
+    .attr('fill', d => colorScale(d[0]));
+
+  legendGroup
+    .append('g')
+    .call(
+      axisBottom(legendScale)
+        .tickSize(25)
+        .tickValues(tickValues)
+        .tickFormat(d => `${Math.round(+d).toString()}%`)
+    )
+    .select('.domain')
+    .remove();
 };
 
 const renderMap = (
@@ -157,10 +218,17 @@ const renderMap = (
       )
     )
     .attr('fill', 'none')
-    .attr('stroke', '#f8f9fa')
+    .attr('stroke', (GLOBALS as { COLORS: RecordProps }).COLORS.white)
     .attr('stroke-width', 2)
     .attr('stroke-linejoin', 'round')
     .attr('d', path);
+
+  renderLegend(
+    svg as unknown as Selection<SVGSVGElement, unknown, null, undefined>,
+    color,
+    minRate,
+    maxRate
+  );
 };
 
 export const ChoroplethMap = (): string => {
