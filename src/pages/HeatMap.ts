@@ -50,7 +50,6 @@ const handleMouseOver = (
   baseTemperature: number
 ): void => {
   const width = 10.5;
-  const fillColor = 'black';
   const posY = e.clientY;
 
   const varianceFormatted =
@@ -59,8 +58,7 @@ const handleMouseOver = (
   createTooltip({
     e,
     posY,
-    width,
-    fillColor
+    width
   });
 
   select('#tooltip').html(

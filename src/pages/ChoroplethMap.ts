@@ -84,7 +84,6 @@ const handleMouseOver = (
   educationMap: Map<number, EducationProps[number]>
 ): void => {
   const width = 13;
-  const fillColor = 'black';
   const posY = e.clientY;
 
   const {
@@ -96,8 +95,7 @@ const handleMouseOver = (
   createTooltip({
     e,
     posY,
-    width,
-    fillColor
+    width
   });
 
   select('#tooltip').html(
@@ -107,7 +105,7 @@ const handleMouseOver = (
         <br>
         ${US_STATES[state as keyof typeof US_STATES]}
       </strong>
-      – ${bachelorsOrHigher.toString()}%
+      - ${bachelorsOrHigher.toString()}%
     `
   );
 };

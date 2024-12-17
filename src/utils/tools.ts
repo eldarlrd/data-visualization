@@ -9,7 +9,7 @@ interface TooltipProps {
   posX?: number;
   posY: number;
   width: number;
-  fillColor: string;
+  fillColor?: string;
 }
 
 interface PageProps {
@@ -61,12 +61,12 @@ const controlTooltip = ({
   posX = e.clientX,
   posY,
   width,
-  fillColor
+  fillColor = 'black'
 }: TooltipProps): void => {
   const windowWidth = window.innerWidth;
   const scaleFactor =
-    windowWidth < 36 * 16 ? -2
-    : windowWidth < 48 * 16 ? 0
+    windowWidth <= 36 * 16 ? -2
+    : windowWidth <= 48 * 16 ? 0
     : 1;
 
   const windowPadding = 10;

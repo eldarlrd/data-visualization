@@ -36,7 +36,7 @@ describe('tools', () => {
   it('create a visual when called', () => {
     const visual = createVisual(0, 'chart');
 
-    expect(visual).toContain('<h3>');
+    expect(visual).toContain("<h3 class='fw-normal'>");
     expect(visual).toContain("id='chart'");
     expect(visual).toContain(Spinner());
   });
@@ -61,6 +61,30 @@ describe('tools', () => {
     expect(tooltip.style('display')).toBe('block');
     expect(tooltip.style('top')).toBe('160px'); // +10px for window padding
     expect(tooltip.style('left')).toBe('894px'); // Shift based on overflow
+
+    window.innerWidth = 48 * 16; // Scale 0.8
+
+    createTooltip({
+      e: mockEvent,
+      posY: 150,
+      width: 7.5,
+      fillColor: 'lightGreen'
+    });
+
+    expect(tooltip.style('top')).toBe('150px'); // +10px for window padding
+    expect(tooltip.style('left')).toBe('648px'); // Shift based on overflow
+
+    window.innerWidth = 36 * 16; // Scale 0.5
+
+    createTooltip({
+      e: mockEvent,
+      posY: 150,
+      width: 7.5,
+      fillColor: 'lightGreen'
+    });
+
+    expect(tooltip.style('top')).toBe('130px'); // +10px for window padding
+    expect(tooltip.style('left')).toBe('476px'); // Shift based on overflow
   });
 
   it('hide the tooltip on mouse out', () => {
